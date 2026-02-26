@@ -364,14 +364,22 @@
   .output-table tr:last-child td { border-bottom: none; }
 
   .output-table .section-row td {
-    font-weight: 600;
-    font-size: .75rem;
-    text-transform: uppercase;
-    letter-spacing: .03em;
-    color: var(--teal-700);
+    font-weight: 700;
+    font-size: .8rem;
+    text-transform: none;
+    color: var(--gray-800);
+    background: white;
+    padding: .6rem .75rem .3rem;
+    border-bottom: 2px solid var(--teal-300);
+    border-left: 3px solid var(--teal-700);
+  }
+
+  .output-table .metric-row td {
+    font-size: .8rem;
+    color: var(--gray-500);
     background: var(--teal-50);
-    padding: .4rem .75rem;
     border-bottom: none;
+    font-style: italic;
   }
 
   .output-table .total-row td {
@@ -487,30 +495,6 @@
     color: var(--teal-800);
   }
 
-  .metric-card {
-    background: white;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 1rem 1.5rem;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-left: 4px solid var(--teal-700);
-  }
-
-  .metric-label {
-    font-size: .85rem;
-    color: var(--gray-600);
-  }
-
-  .metric-value {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--teal-700);
-    font-variant-numeric: tabular-nums;
-  }
-
   footer {
     text-align: center;
     padding: 2rem 1rem;
@@ -621,12 +605,6 @@
         <p style="font-size:.7rem; color:#9ca3af; padding:.25rem .5rem .25rem; font-style:italic;">** Faunabeheer Midden-Nederland charges around 300 per camera per year. Only applies when enabled in project parameters.</p>
       </div>
     </div>
-  </div>
-
-  <!-- Metric -->
-  <div class="metric-card">
-    <span class="metric-label">Average cost per camera per year</span>
-    <span class="metric-value" id="metricAvg">-</span>
   </div>
 
   <!-- Scaling insight -->
@@ -772,9 +750,14 @@
         <td><div class="currency"><span>&euro;</span><span>${eur(r.total)}</span></div></td>
       </tr>`;
     });
+    const avgPerCamYear = (active > 0 && years > 0) ? eur(grandTotal / active / years) : '-';
     tableHTML += `<tr class="total-row">
         <td colspan="4">Total</td>
         <td><div class="currency"><span>&euro;</span><span>${eur(grandTotal)}</span></div></td>
+      </tr>
+      <tr class="metric-row">
+        <td colspan="4">Average cost per camera per year</td>
+        <td><div class="currency"><span>&euro;</span><span>${avgPerCamYear}</span></div></td>
       </tr>`;
     tbody.innerHTML = tableHTML;
 
@@ -840,15 +823,7 @@
       .map(([name, value]) => ({ name, value, color: CAT_COLORS[name] || '#9ca3af' }));
     renderDonut($('catDonut'), $('catLegend'), catData, grandTotal);
 
-    // Metric: average cost per camera per year
-    const metricEl = $('metricAvg');
-    if (active > 0 && years > 0) {
-      metricEl.textContent = '\u20AC ' + eur(grandTotal / active / years);
-    } else {
-      metricEl.textContent = '-';
-    }
-
-    // Scaling insight table and chart
+    // Scaling insight table
     const camSteps = [10, 25, 50, 75, 100, 150, 200];
     const yearSteps = [1, 2, 3, 5];
     const backupRatio = active > 0 ? backup / active : 0.1;
