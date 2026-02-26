@@ -370,18 +370,18 @@
   <!-- Inputs -->
   <div class="grid">
     <div class="card">
-      <div class="card-header green">Project Parameters</div>
+      <div class="card-header green">Project parameters</div>
       <div class="card-body">
         <div class="input-row">
-          <label>Number of years<span class="caption">Project duration — affects all recurring costs</span></label>
+          <label>Number of years<span class="caption">Project duration, affects mobile data, software maintenance, server maintenance, and server instance costs</span></label>
           <input type="number" id="years" value="1" min="1" step="1">
         </div>
         <div class="input-row">
-          <label>Active cameras<span class="caption">Cameras currently in use</span></label>
+          <label>Active cameras<span class="caption">Cameras with an active connection to the system (includes SIM, SD-cards, batteries, configuration)</span></label>
           <input type="number" id="activeCameras" value="25" min="0" step="1">
         </div>
         <div class="input-row">
-          <label>Backup cameras<span class="caption">Extra cameras kept as spares</span></label>
+          <label>Backup cameras<span class="caption">Spare cameras without an active connection, no SIM or configuration costs</span></label>
           <input type="number" id="backupCameras" value="10" min="0" step="1">
         </div>
         <div class="input-row">
@@ -389,11 +389,11 @@
           <input type="number" id="enclosures" value="0" min="0" step="1">
         </div>
         <div class="input-row">
-          <label>Training sessions<span class="caption">Training sessions for end users</span></label>
+          <label>Training sessions<span class="caption">Onboarding sessions to walk through the platform, settings, and workflows</span></label>
           <input type="number" id="trainingSessions" value="2" min="0" step="1">
         </div>
         <div class="input-row">
-          <label>Days of software development<span class="caption">Additional development beyond the standard setup</span></label>
+          <label>Days of software development<span class="caption">Usually not needed, can be included for custom features or integrations</span></label>
           <input type="number" id="devDays" value="5" min="0" step="1">
         </div>
         <span class="prices-link" id="openModal">View unit prices</span>
@@ -402,11 +402,11 @@
 
   </div>
 
-  <!-- Unit Prices Modal -->
+  <!-- Unit prices modal -->
   <div class="modal-overlay" id="pricesModal">
     <div class="modal">
       <div class="modal-header">
-        Unit Prices
+        Unit prices
         <button class="modal-close" id="closeModal">&times;</button>
       </div>
       <div class="modal-body">
@@ -440,7 +440,7 @@
   <!-- Output -->
   <div class="grid">
     <div class="card full-width">
-      <div class="card-header dark">Cost Breakdown</div>
+      <div class="card-header dark">Cost breakdown</div>
       <div class="card-body" style="padding:0">
         <table class="output-table">
           <thead>
@@ -455,7 +455,7 @@
   <!-- Chart -->
   <div class="grid">
     <div class="card full-width">
-      <div class="card-header dark">Cost Distribution</div>
+      <div class="card-header dark">Cost distribution</div>
       <div class="chart-container">
         <svg id="donut" class="chart-svg" width="220" height="220" viewBox="0 0 220 220"></svg>
         <div id="legend" class="legend"></div>
