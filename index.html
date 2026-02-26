@@ -41,31 +41,33 @@
   }
 
   header {
-    background: linear-gradient(135deg, var(--teal-900), var(--teal-700));
-    color: white;
-    padding: 2rem 1.5rem;
+    background: white;
+    color: var(--teal-900);
+    padding: 2rem 1.5rem 1.5rem;
     text-align: center;
+    border-bottom: 3px solid var(--teal-700);
   }
 
   header img {
-    height: 60px;
+    height: 50px;
     margin-bottom: .75rem;
   }
 
   header h1 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     font-weight: 700;
+    color: var(--teal-700);
     margin-bottom: .25rem;
   }
 
   header p {
-    opacity: .85;
+    color: var(--gray-600);
     font-size: .95rem;
     max-width: 540px;
     margin: 0 auto;
   }
 
-  header a { color: var(--teal-200); }
+  header a { color: var(--teal-700); }
 
   .container {
     max-width: 1100px;
@@ -125,6 +127,14 @@
     font-size: .875rem;
     color: var(--gray-700);
     flex: 1;
+  }
+
+  .input-row label .caption {
+    display: block;
+    font-size: .75rem;
+    color: var(--gray-500);
+    font-weight: 400;
+    margin-top: .1rem;
   }
 
   .input-row .desc {
@@ -190,17 +200,6 @@
     font-weight: 600;
     color: var(--gray-800);
   }
-
-  .vendor-badge {
-    display: inline-block;
-    padding: .1rem .4rem;
-    border-radius: 3px;
-    font-size: .65rem;
-    font-weight: 600;
-  }
-
-  .vendor-badge.sp { background: var(--teal-100); color: var(--teal-700); }
-  .vendor-badge.ax { background: var(--amber-100); color: #92702a; }
 
   /* Output table */
   .output-table {
@@ -312,27 +311,27 @@
       <div class="card-header green">Project Parameters</div>
       <div class="card-body">
         <div class="input-row">
-          <label>Number of years</label>
+          <label>Number of years<span class="caption">Project duration — affects all recurring costs</span></label>
           <input type="number" id="years" value="1" min="1" step="1">
         </div>
         <div class="input-row">
-          <label>Active cameras</label>
+          <label>Active cameras<span class="caption">Cameras currently in use</span></label>
           <input type="number" id="activeCameras" value="25" min="0" step="1">
         </div>
         <div class="input-row">
-          <label>Backup cameras</label>
+          <label>Backup cameras<span class="caption">Extra cameras kept as spares</span></label>
           <input type="number" id="backupCameras" value="10" min="0" step="1">
         </div>
         <div class="input-row">
-          <label>Enclosures</label>
+          <label>Enclosures<span class="caption">Optional protective camera housings</span></label>
           <input type="number" id="enclosures" value="0" min="0" step="1">
         </div>
         <div class="input-row">
-          <label>Training sessions</label>
+          <label>Training sessions<span class="caption">Training sessions for end users</span></label>
           <input type="number" id="trainingSessions" value="2" min="0" step="1">
         </div>
         <div class="input-row">
-          <label>Days of software development</label>
+          <label>Days of software development<span class="caption">Additional development beyond the standard setup</span></label>
           <input type="number" id="devDays" value="5" min="0" step="1">
         </div>
       </div>
@@ -343,25 +342,25 @@
       <div class="card-body" style="padding:.5rem">
         <table class="cost-table">
           <thead>
-            <tr><th>Item</th><th>Price (&euro;)</th><th>Type</th><th>Vendor</th></tr>
+            <tr><th>Item</th><th>Price (&euro;)</th><th>Type</th></tr>
           </thead>
           <tbody>
-            <tr><td>Camera</td><td class="price">&euro; 130</td><td class="desc">per camera</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
-            <tr><td>Enclosure</td><td class="price">&euro; 25</td><td class="desc">per enclosure</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
-            <tr><td>Configuration</td><td class="price">&euro; 25</td><td class="desc">per camera</td><td><span class="vendor-badge ax">Addax</span></td></tr>
-            <tr><td>Logistics</td><td class="price">&euro; 10</td><td class="desc">per camera</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
-            <tr><td>SD-card (two sets)</td><td class="price">&euro; 20</td><td class="desc">per camera</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
-            <tr><td>Batteries (two sets)</td><td class="price">&euro; 100</td><td class="desc">per camera</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
-            <tr><td>Mobile data (SIM)</td><td class="price">&euro; 5</td><td class="desc">per camera / month</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
-            <tr><td>Camera management</td><td class="price">&euro; 0</td><td class="desc">per camera / year</td><td></td></tr>
-            <tr><td>Battery charger</td><td class="price">&euro; 50</td><td class="desc">per project</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
-            <tr><td>Software setup</td><td class="price">&euro; 1,000</td><td class="desc">per project</td><td><span class="vendor-badge ax">Addax</span></td></tr>
-            <tr><td>Software maintenance</td><td class="price">&euro; 250</td><td class="desc">per project / month</td><td><span class="vendor-badge ax">Addax</span></td></tr>
-            <tr><td>Software development</td><td class="price">&euro; 1,000</td><td class="desc">per day</td><td><span class="vendor-badge ax">Addax</span></td></tr>
-            <tr><td>Server setup</td><td class="price">&euro; 1,000</td><td class="desc">per project</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
-            <tr><td>Server maintenance</td><td class="price">&euro; 250</td><td class="desc">per project / month</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
-            <tr><td>Server instance</td><td class="price">&euro; 100</td><td class="desc">per project / month</td><td><span class="vendor-badge ax">Addax</span></td></tr>
-            <tr><td>Training session</td><td class="price">&euro; 1,000</td><td class="desc">per session</td><td><span class="vendor-badge ax">Addax</span></td></tr>
+            <tr><td>Camera</td><td class="price">&euro; 130</td><td class="desc">per camera</td></tr>
+            <tr><td>Enclosure</td><td class="price">&euro; 25</td><td class="desc">per enclosure</td></tr>
+            <tr><td>Configuration</td><td class="price">&euro; 25</td><td class="desc">per camera</td></tr>
+            <tr><td>Logistics</td><td class="price">&euro; 10</td><td class="desc">per camera</td></tr>
+            <tr><td>SD-card (two sets)</td><td class="price">&euro; 20</td><td class="desc">per camera</td></tr>
+            <tr><td>Batteries (two sets)</td><td class="price">&euro; 100</td><td class="desc">per camera</td></tr>
+            <tr><td>Mobile data (SIM)</td><td class="price">&euro; 5</td><td class="desc">per camera / month</td></tr>
+            <tr><td>Camera management</td><td class="price">&euro; 0</td><td class="desc">per camera / year</td></tr>
+            <tr><td>Battery charger</td><td class="price">&euro; 50</td><td class="desc">per project</td></tr>
+            <tr><td>Software setup</td><td class="price">&euro; 1,000</td><td class="desc">per project</td></tr>
+            <tr><td>Software maintenance</td><td class="price">&euro; 250</td><td class="desc">per project / month</td></tr>
+            <tr><td>Software development</td><td class="price">&euro; 1,000</td><td class="desc">per day</td></tr>
+            <tr><td>Server setup</td><td class="price">&euro; 1,000</td><td class="desc">per project</td></tr>
+            <tr><td>Server maintenance</td><td class="price">&euro; 250</td><td class="desc">per project / month</td></tr>
+            <tr><td>Server instance</td><td class="price">&euro; 100</td><td class="desc">per project / month</td></tr>
+            <tr><td>Training session</td><td class="price">&euro; 1,000</td><td class="desc">per session</td></tr>
           </tbody>
         </table>
       </div>
