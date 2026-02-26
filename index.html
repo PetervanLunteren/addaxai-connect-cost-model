@@ -613,9 +613,6 @@
     <summary class="collapsible-toggle">How does cost per camera per year change with scale?</summary>
     <div class="collapsible-body">
       <table class="output-table scaling-table">
-        <thead>
-          <tr><th></th></tr>
-        </thead>
         <tbody id="scalingBody"></tbody>
       </table>
     </div>
@@ -849,12 +846,6 @@
       sHTML += '</tr>';
     });
     scalingBody.innerHTML = sHTML;
-
-    // Update table header to match columns
-    const scalingHead = scalingBody.closest('table').querySelector('thead tr');
-    scalingHead.innerHTML = '<th></th>' + camSteps.map(c =>
-      `<th${c === active ? ' class="current-cell"' : ''}>${c}</th>`
-    ).join('');
 
   }
 
