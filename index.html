@@ -873,7 +873,7 @@
     const yScale = v => pad.top + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
 
     const lineColors = ['var(--teal-700)', 'var(--teal-400)'];
-    let svg = `<svg viewBox="0 0 ${chartW} ${chartH}" style="width:100%;max-width:${chartW}px;height:auto;font-family:inherit;">`;
+    let svg = `<svg viewBox="0 0 ${chartW} ${chartH}" style="width:100%;height:auto;font-family:inherit;">`;
 
     // Y gridlines and labels
     const yTicks = 5;
