@@ -6,16 +6,16 @@
 <title>AddaxAI-Connect Cost Calculator</title>
 <style>
   :root {
-    --green-900: #1a3a2a;
-    --green-800: #234d38;
-    --green-700: #2d6047;
-    --green-600: #377356;
-    --green-500: #419966;
-    --green-400: #5cb87e;
-    --green-300: #84d0a0;
-    --green-200: #b3e4c5;
-    --green-100: #e0f5e8;
-    --green-50: #f0faf4;
+    --teal-900: #063e42;
+    --teal-800: #094f54;
+    --teal-700: #0b5f65;
+    --teal-600: #0e7a82;
+    --teal-500: #12949d;
+    --teal-400: #2db3bc;
+    --teal-300: #6dcdd4;
+    --teal-200: #a8e1e5;
+    --teal-100: #d8f2f4;
+    --teal-50: #eef9fa;
     --amber-500: #d4a030;
     --amber-100: #fef3cd;
     --gray-50: #f8fafb;
@@ -41,10 +41,15 @@
   }
 
   header {
-    background: linear-gradient(135deg, var(--green-900), var(--green-700));
+    background: linear-gradient(135deg, var(--teal-900), var(--teal-700));
     color: white;
     padding: 2rem 1.5rem;
     text-align: center;
+  }
+
+  header img {
+    height: 60px;
+    margin-bottom: .75rem;
   }
 
   header h1 {
@@ -60,7 +65,7 @@
     margin: 0 auto;
   }
 
-  header a { color: var(--green-200); }
+  header a { color: var(--teal-200); }
 
   .container {
     max-width: 1100px;
@@ -94,12 +99,12 @@
   }
 
   .card-header.green {
-    background: var(--green-700);
+    background: var(--teal-700);
     color: white;
   }
 
   .card-header.dark {
-    background: var(--green-900);
+    background: var(--teal-900);
     color: white;
   }
 
@@ -141,7 +146,7 @@
 
   .input-row input:focus {
     outline: none;
-    border-color: var(--green-500);
+    border-color: var(--teal-500);
     box-shadow: 0 0 0 3px rgba(65,153,102,.15);
   }
 
@@ -179,21 +184,11 @@
 
   .cost-table tr:last-child td { border-bottom: none; }
 
-  .cost-table input {
-    width: 70px;
+  .cost-table .price {
     text-align: right;
-    padding: .25rem .4rem;
-    border: 1px solid var(--gray-200);
-    border-radius: 4px;
-    font-size: .8rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
     color: var(--gray-800);
-    background: var(--gray-50);
-  }
-
-  .cost-table input:focus {
-    outline: none;
-    border-color: var(--green-500);
-    box-shadow: 0 0 0 3px rgba(65,153,102,.15);
   }
 
   .vendor-badge {
@@ -204,7 +199,7 @@
     font-weight: 600;
   }
 
-  .vendor-badge.sp { background: var(--green-100); color: var(--green-700); }
+  .vendor-badge.sp { background: var(--teal-100); color: var(--teal-700); }
   .vendor-badge.ax { background: var(--amber-100); color: #92702a; }
 
   /* Output table */
@@ -217,8 +212,8 @@
   .output-table th {
     text-align: left;
     padding: .5rem .75rem;
-    background: var(--green-50);
-    color: var(--green-800);
+    background: var(--teal-50);
+    color: var(--teal-800);
     font-weight: 600;
     font-size: .75rem;
     text-transform: uppercase;
@@ -244,10 +239,10 @@
   .output-table .total-row td {
     font-weight: 700;
     font-size: 1rem;
-    background: var(--green-50);
-    border-top: 2px solid var(--green-300);
+    background: var(--teal-50);
+    border-top: 2px solid var(--teal-300);
     border-bottom: none;
-    color: var(--green-900);
+    color: var(--teal-900);
   }
 
   /* Chart */
@@ -304,6 +299,7 @@
 <body>
 
 <header>
+  <img src="logo.png" alt="AddaxAI">
   <h1>AddaxAI-Connect Cost Calculator</h1>
   <p>Estimate the costs for your <a href="https://github.com/PetervanLunteren/AddaxAI-Connect" target="_blank">AddaxAI-Connect</a> wildlife monitoring project.</p>
 </header>
@@ -350,102 +346,22 @@
             <tr><th>Item</th><th>Price (&euro;)</th><th>Type</th><th>Vendor</th></tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Camera</td>
-              <td><input type="number" id="priceCamera" value="130" min="0" step="1"></td>
-              <td class="desc">per camera</td>
-              <td><span class="vendor-badge sp">Smart Parks</span></td>
-            </tr>
-            <tr>
-              <td>Enclosure</td>
-              <td><input type="number" id="priceEnclosure" value="25" min="0" step="1"></td>
-              <td class="desc">per enclosure</td>
-              <td><span class="vendor-badge sp">Smart Parks</span></td>
-            </tr>
-            <tr>
-              <td>Configuration</td>
-              <td><input type="number" id="priceConfig" value="25" min="0" step="1"></td>
-              <td class="desc">per camera</td>
-              <td><span class="vendor-badge ax">Addax</span></td>
-            </tr>
-            <tr>
-              <td>Logistics</td>
-              <td><input type="number" id="priceLogistics" value="10" min="0" step="1"></td>
-              <td class="desc">per camera</td>
-              <td><span class="vendor-badge sp">Smart Parks</span></td>
-            </tr>
-            <tr>
-              <td>SD-card (two sets)</td>
-              <td><input type="number" id="priceSD" value="20" min="0" step="1"></td>
-              <td class="desc">per camera</td>
-              <td><span class="vendor-badge sp">Smart Parks</span></td>
-            </tr>
-            <tr>
-              <td>Batteries (two sets)</td>
-              <td><input type="number" id="priceBatteries" value="100" min="0" step="1"></td>
-              <td class="desc">per camera</td>
-              <td><span class="vendor-badge sp">Smart Parks</span></td>
-            </tr>
-            <tr>
-              <td>Mobile data (SIM)</td>
-              <td><input type="number" id="priceSIM" value="5" min="0" step="0.5"></td>
-              <td class="desc">per camera / month</td>
-              <td><span class="vendor-badge sp">Smart Parks</span></td>
-            </tr>
-            <tr>
-              <td>Camera management</td>
-              <td><input type="number" id="priceCamMgmt" value="0" min="0" step="1"></td>
-              <td class="desc">per camera / year</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Battery charger</td>
-              <td><input type="number" id="priceCharger" value="50" min="0" step="1"></td>
-              <td class="desc">per project</td>
-              <td><span class="vendor-badge sp">Smart Parks</span></td>
-            </tr>
-            <tr>
-              <td>Software setup</td>
-              <td><input type="number" id="priceSWSetup" value="1000" min="0" step="50"></td>
-              <td class="desc">per project</td>
-              <td><span class="vendor-badge ax">Addax</span></td>
-            </tr>
-            <tr>
-              <td>Software maintenance</td>
-              <td><input type="number" id="priceSWMaint" value="250" min="0" step="10"></td>
-              <td class="desc">per project / month</td>
-              <td><span class="vendor-badge ax">Addax</span></td>
-            </tr>
-            <tr>
-              <td>Software development</td>
-              <td><input type="number" id="priceSWDev" value="1000" min="0" step="50"></td>
-              <td class="desc">per day</td>
-              <td><span class="vendor-badge ax">Addax</span></td>
-            </tr>
-            <tr>
-              <td>Server setup</td>
-              <td><input type="number" id="priceSrvSetup" value="1000" min="0" step="50"></td>
-              <td class="desc">per project</td>
-              <td><span class="vendor-badge sp">Smart Parks</span></td>
-            </tr>
-            <tr>
-              <td>Server maintenance</td>
-              <td><input type="number" id="priceSrvMaint" value="250" min="0" step="10"></td>
-              <td class="desc">per project / month</td>
-              <td><span class="vendor-badge sp">Smart Parks</span></td>
-            </tr>
-            <tr>
-              <td>Server instance</td>
-              <td><input type="number" id="priceSrvInstance" value="100" min="0" step="10"></td>
-              <td class="desc">per project / month</td>
-              <td><span class="vendor-badge ax">Addax</span></td>
-            </tr>
-            <tr>
-              <td>Training session</td>
-              <td><input type="number" id="priceTraining" value="1000" min="0" step="50"></td>
-              <td class="desc">per session</td>
-              <td><span class="vendor-badge ax">Addax</span></td>
-            </tr>
+            <tr><td>Camera</td><td class="price">&euro; 130</td><td class="desc">per camera</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
+            <tr><td>Enclosure</td><td class="price">&euro; 25</td><td class="desc">per enclosure</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
+            <tr><td>Configuration</td><td class="price">&euro; 25</td><td class="desc">per camera</td><td><span class="vendor-badge ax">Addax</span></td></tr>
+            <tr><td>Logistics</td><td class="price">&euro; 10</td><td class="desc">per camera</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
+            <tr><td>SD-card (two sets)</td><td class="price">&euro; 20</td><td class="desc">per camera</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
+            <tr><td>Batteries (two sets)</td><td class="price">&euro; 100</td><td class="desc">per camera</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
+            <tr><td>Mobile data (SIM)</td><td class="price">&euro; 5</td><td class="desc">per camera / month</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
+            <tr><td>Camera management</td><td class="price">&euro; 0</td><td class="desc">per camera / year</td><td></td></tr>
+            <tr><td>Battery charger</td><td class="price">&euro; 50</td><td class="desc">per project</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
+            <tr><td>Software setup</td><td class="price">&euro; 1,000</td><td class="desc">per project</td><td><span class="vendor-badge ax">Addax</span></td></tr>
+            <tr><td>Software maintenance</td><td class="price">&euro; 250</td><td class="desc">per project / month</td><td><span class="vendor-badge ax">Addax</span></td></tr>
+            <tr><td>Software development</td><td class="price">&euro; 1,000</td><td class="desc">per day</td><td><span class="vendor-badge ax">Addax</span></td></tr>
+            <tr><td>Server setup</td><td class="price">&euro; 1,000</td><td class="desc">per project</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
+            <tr><td>Server maintenance</td><td class="price">&euro; 250</td><td class="desc">per project / month</td><td><span class="vendor-badge sp">Smart Parks</span></td></tr>
+            <tr><td>Server instance</td><td class="price">&euro; 100</td><td class="desc">per project / month</td><td><span class="vendor-badge ax">Addax</span></td></tr>
+            <tr><td>Training session</td><td class="price">&euro; 1,000</td><td class="desc">per session</td><td><span class="vendor-badge ax">Addax</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -490,11 +406,19 @@
   const val = id => parseFloat($(id).value) || 0;
   const eur = n => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+  // Fixed unit prices
+  const P = {
+    camera: 130, enclosure: 25, config: 25, logistics: 10,
+    sd: 20, batteries: 100, sim: 5, camMgmt: 0, charger: 50,
+    swSetup: 1000, swMaint: 250, swDev: 1000,
+    srvSetup: 1000, srvMaint: 250, srvInstance: 100, training: 1000
+  };
+
   const COLORS = [
-    '#2d6047','#419966','#5cb87e','#84d0a0','#b3e4c5',
-    '#d4a030','#e8be5a','#f0d68a','#1a3a2a','#377356',
-    '#6ba68a','#234d38','#92702a','#b8963c','#c9ae60',
-    '#4d8c6e','#a0c4b0'
+    '#0b5f65','#0e7a82','#12949d','#2db3bc','#6dcdd4',
+    '#d4a030','#e8be5a','#f0d68a','#063e42','#094f54',
+    '#3ec0c8','#a8e1e5','#92702a','#b8963c','#c9ae60',
+    '#48c5cd','#78d4da'
   ];
 
   function calculate() {
@@ -507,23 +431,23 @@
     const months    = years * 12;
 
     const rows = [
-      { name: 'Active cameras',                unit: val('priceCamera'),      basis: 'Per item',          qty: active },
-      { name: 'Backup cameras',                unit: val('priceCamera'),      basis: 'Per item',          qty: backup },
-      { name: 'Enclosures',                    unit: val('priceEnclosure'),   basis: 'Per item',          qty: enclCount },
-      { name: 'Battery charger',               unit: val('priceCharger'),     basis: 'Per project',       qty: 1 },
-      { name: 'SD-cards (two sets)',            unit: val('priceSD'),          basis: 'Per active camera', qty: active },
-      { name: 'Batteries (two sets)',           unit: val('priceBatteries'),   basis: 'Per active camera', qty: active },
-      { name: 'Logistics',                     unit: val('priceLogistics'),   basis: 'Per item',          qty: active + backup },
-      { name: 'Mobile data (SIM-card)',         unit: val('priceSIM') * months, basis: 'Per active camera', qty: active },
-      { name: 'Camera configuration',          unit: val('priceConfig'),      basis: 'Per active camera', qty: active },
-      { name: 'Camera placement & management', unit: val('priceCamMgmt') * years, basis: 'Per active camera', qty: active },
-      { name: 'Server instance',               unit: val('priceSrvInstance') * months, basis: 'Per project', qty: 1 },
-      { name: 'Server setup',                  unit: val('priceSrvSetup'),    basis: 'Per project',       qty: 1 },
-      { name: 'Server maintenance',            unit: val('priceSrvMaint') * months, basis: 'Per project', qty: 1 },
-      { name: 'Software setup',                unit: val('priceSWSetup'),     basis: 'Per project',       qty: 1 },
-      { name: 'Software maintenance',          unit: val('priceSWMaint') * months, basis: 'Per project',  qty: 1 },
-      { name: 'Software development',          unit: val('priceSWDev'),       basis: 'Per day',           qty: devDays },
-      { name: 'Training',                      unit: val('priceTraining'),    basis: 'Per session',       qty: sessions },
+      { name: 'Active cameras',                unit: P.camera,              basis: 'Per item',          qty: active },
+      { name: 'Backup cameras',                unit: P.camera,              basis: 'Per item',          qty: backup },
+      { name: 'Enclosures',                    unit: P.enclosure,           basis: 'Per item',          qty: enclCount },
+      { name: 'Battery charger',               unit: P.charger,             basis: 'Per project',       qty: 1 },
+      { name: 'SD-cards (two sets)',            unit: P.sd,                  basis: 'Per active camera', qty: active },
+      { name: 'Batteries (two sets)',           unit: P.batteries,           basis: 'Per active camera', qty: active },
+      { name: 'Logistics',                     unit: P.logistics,           basis: 'Per item',          qty: active + backup },
+      { name: 'Mobile data (SIM-card)',         unit: P.sim * months,        basis: 'Per active camera', qty: active },
+      { name: 'Camera configuration',          unit: P.config,              basis: 'Per active camera', qty: active },
+      { name: 'Camera placement & management', unit: P.camMgmt * years,     basis: 'Per active camera', qty: active },
+      { name: 'Server instance',               unit: P.srvInstance * months, basis: 'Per project',      qty: 1 },
+      { name: 'Server setup',                  unit: P.srvSetup,            basis: 'Per project',       qty: 1 },
+      { name: 'Server maintenance',            unit: P.srvMaint * months,   basis: 'Per project',       qty: 1 },
+      { name: 'Software setup',                unit: P.swSetup,             basis: 'Per project',       qty: 1 },
+      { name: 'Software maintenance',          unit: P.swMaint * months,    basis: 'Per project',       qty: 1 },
+      { name: 'Software development',          unit: P.swDev,               basis: 'Per day',           qty: devDays },
+      { name: 'Training',                      unit: P.training,            basis: 'Per session',       qty: sessions },
     ];
 
     rows.forEach(r => r.total = r.unit * r.qty);
