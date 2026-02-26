@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AddaxAI-Connect Cost Calculator</title>
+<title>AddaxAI-Connect cost calculator</title>
 <style>
   :root {
     --teal-900: #063e42;
@@ -506,7 +506,7 @@
 
 <header>
   <img src="logo.png" alt="AddaxAI">
-  <h1>AddaxAI-Connect Cost Calculator</h1>
+  <h1>AddaxAI-Connect cost calculator</h1>
   <p>Estimate the costs for your <a href="https://github.com/PetervanLunteren/AddaxAI-Connect" target="_blank">AddaxAI-Connect</a> wildlife monitoring project.</p>
 </header>
 
@@ -611,23 +611,12 @@
   <details class="collapsible" id="scalingDetails">
     <summary class="collapsible-toggle">How does cost per camera per year change with scale?</summary>
     <div class="collapsible-body">
-      <div class="grid">
-        <div class="card">
-          <div class="card-body" style="padding:0">
-            <table class="output-table scaling-table">
-              <thead>
-                <tr><th></th></tr>
-              </thead>
-              <tbody id="scalingBody"></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <canvas id="scalingChart" height="280"></canvas>
-          </div>
-        </div>
-      </div>
+      <table class="output-table scaling-table">
+        <thead>
+          <tr><th></th></tr>
+        </thead>
+        <tbody id="scalingBody"></tbody>
+      </table>
     </div>
   </details>
 
@@ -712,10 +701,9 @@
     const mgmtCost  = val('camMgmtCost');
     const months    = years * 12;
 
-    // Disable and zero camera inputs when BYO is checked
+    // Disable camera inputs when BYO is checked
     document.querySelectorAll('.camera-row').forEach(row => {
       row.classList.toggle('disabled', byo);
-      if (byo) row.querySelector('input').value = 0;
     });
 
     const camQtyActive = byo ? 0 : active;
@@ -735,11 +723,11 @@
       { name: 'Software setup',                unit: P.swSetup,             basis: 'Per project',       qty: 1,                           cat: 'Setup' },
       { name: 'Software development',          unit: P.swDev,               basis: 'Per day',           qty: devDays,                     cat: 'Setup' },
       { name: 'Training',                      unit: P.training,            basis: 'Per session',       qty: sessions,                    cat: 'Setup' },
-      { name: 'Mobile data (SIM-card)',         unit: P.sim * months,        basis: 'Per camera / ' + years + 'yr', qty: active,             cat: 'Recurring' },
-      { name: 'Camera placement & management', unit: (inclMgmt ? mgmtCost : 0) * years, basis: 'Per camera / ' + years + 'yr', qty: active, cat: 'Recurring' },
-      { name: 'Server instance',               unit: P.srvInstance * months, basis: 'Per project / ' + years + 'yr', qty: 1,              cat: 'Recurring' },
-      { name: 'Server maintenance',            unit: P.srvMaint * months,   basis: 'Per project / ' + years + 'yr', qty: 1,               cat: 'Recurring' },
-      { name: 'Software maintenance',          unit: P.swMaint * months,    basis: 'Per project / ' + years + 'yr', qty: 1,               cat: 'Recurring' },
+      { name: 'Mobile data (SIM-card)',         unit: P.sim * months,        basis: 'Per camera / ' + years + 'yr', qty: active,             cat: 'Usage' },
+      { name: 'Camera placement & management', unit: (inclMgmt ? mgmtCost : 0) * years, basis: 'Per camera / ' + years + 'yr', qty: active, cat: 'Usage' },
+      { name: 'Server instance',               unit: P.srvInstance * months, basis: 'Per project / ' + years + 'yr', qty: 1,              cat: 'Usage' },
+      { name: 'Server maintenance',            unit: P.srvMaint * months,   basis: 'Per project / ' + years + 'yr', qty: 1,               cat: 'Usage' },
+      { name: 'Software maintenance',          unit: P.swMaint * months,    basis: 'Per project / ' + years + 'yr', qty: 1,               cat: 'Usage' },
     ];
 
     rows.forEach(r => r.total = r.unit * r.qty);
@@ -824,7 +812,7 @@
     renderDonut($('donut'), $('legend'), chartData, grandTotal);
 
     // Category donut
-    const CAT_COLORS = { Hardware: '#0b5f65', Setup: '#d4a030', Recurring: '#0e7a82' };
+    const CAT_COLORS = { Hardware: '#0b5f65', Setup: '#d4a030', Usage: '#0e7a82' };
     const catData = Object.entries(catTotals)
       .filter(([, v]) => v > 0)
       .map(([name, value]) => ({ name, value, color: CAT_COLORS[name] || '#9ca3af' }));
@@ -851,15 +839,12 @@
     });
     sHTML += '</tr>';
 
-    const chartPoints = {};
     yearSteps.forEach(y => {
-      chartPoints[y] = [];
       sHTML += `<tr><td class="row-header">${y} yr${y > 1 ? 's' : ''}</td>`;
       camSteps.forEach(c => {
         const bk = Math.round(c * backupRatio);
         const t = computeTotal(P, c, y, byo, bk, enclCount, sessions, 0, inclMgmt, mgmtCost);
         const avg = t / c / y;
-        chartPoints[y].push(avg);
         const isCurrent = c === active && y === years;
         sHTML += `<td class="${isCurrent ? 'current-cell' : ''}">\u20AC ${Math.round(avg)}</td>`;
       });
@@ -873,82 +858,6 @@
       `<th${c === active ? ' class="current-cell"' : ''}>${c}</th>`
     ).join('');
 
-    // Render scaling chart on canvas
-    const canvas = $('scalingChart');
-    const ctx = canvas.getContext('2d');
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = canvas.offsetWidth * dpr;
-    canvas.height = 280 * dpr;
-    ctx.scale(dpr, dpr);
-    const W = canvas.offsetWidth;
-    const H = 280;
-    ctx.clearRect(0, 0, W, H);
-
-    const pad = { top: 20, right: 20, bottom: 40, left: 55 };
-    const pW = W - pad.left - pad.right;
-    const pH = H - pad.top - pad.bottom;
-
-    // Find value range
-    let allVals = [];
-    yearSteps.forEach(y => { allVals = allVals.concat(chartPoints[y]); });
-    const maxVal = Math.max(...allVals) * 1.1;
-    const minVal = 0;
-
-    // Grid lines
-    ctx.strokeStyle = '#e2e5e8';
-    ctx.lineWidth = 1;
-    ctx.font = '11px -apple-system, sans-serif';
-    ctx.fillStyle = '#6b7280';
-    ctx.textAlign = 'right';
-    for (let i = 0; i <= 4; i++) {
-      const y = pad.top + pH - (i / 4) * pH;
-      ctx.beginPath();
-      ctx.moveTo(pad.left, y);
-      ctx.lineTo(pad.left + pW, y);
-      ctx.stroke();
-      ctx.fillText('\u20AC ' + Math.round(minVal + (i / 4) * (maxVal - minVal)), pad.left - 8, y + 4);
-    }
-
-    // X labels
-    ctx.textAlign = 'center';
-    camSteps.forEach((c, i) => {
-      const x = pad.left + (i / (camSteps.length - 1)) * pW;
-      ctx.fillText(c + ' cam', x, H - pad.bottom + 20);
-    });
-
-    // Lines
-    const lineColors = ['#0b5f65', '#0e7a82', '#d4a030', '#92702a'];
-    yearSteps.forEach((y, li) => {
-      const pts = chartPoints[y];
-      ctx.strokeStyle = lineColors[li % lineColors.length];
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      pts.forEach((v, i) => {
-        const x = pad.left + (i / (camSteps.length - 1)) * pW;
-        const yPos = pad.top + pH - ((v - minVal) / (maxVal - minVal)) * pH;
-        if (i === 0) ctx.moveTo(x, yPos); else ctx.lineTo(x, yPos);
-      });
-      ctx.stroke();
-
-      // Dots
-      pts.forEach((v, i) => {
-        const x = pad.left + (i / (camSteps.length - 1)) * pW;
-        const yPos = pad.top + pH - ((v - minVal) / (maxVal - minVal)) * pH;
-        ctx.fillStyle = lineColors[li % lineColors.length];
-        ctx.beginPath();
-        ctx.arc(x, yPos, 3, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
-      // Label at end
-      const lastY = pad.top + pH - ((pts[pts.length - 1] - minVal) / (maxVal - minVal)) * pH;
-      ctx.fillStyle = lineColors[li % lineColors.length];
-      ctx.textAlign = 'left';
-      ctx.font = 'bold 10px -apple-system, sans-serif';
-      ctx.fillText(y + 'yr', pad.left + pW + 4, lastY + 3);
-      ctx.font = '11px -apple-system, sans-serif';
-      ctx.textAlign = 'center';
-    });
   }
 
   // Attach listeners to all inputs
