@@ -34,6 +34,7 @@ body {
 }
 
 header {
+  position: relative;
   background: white;
   color: var(--teal-900);
   padding: .6rem 1.5rem;
@@ -55,6 +56,30 @@ header h1 {
 }
 
 header a { color: var(--teal-700); }
+
+.header-actions {
+  position: absolute;
+  right: 1.5rem;
+  display: flex;
+  gap: .5rem;
+}
+
+.header-btn {
+  padding: .3rem .75rem;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--teal-700);
+  background: white;
+  border: 1.5px solid var(--teal-700);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+
+.header-btn:hover {
+  background: var(--teal-700);
+  color: white;
+}
 
 .container {
   max-width: 1280px;
@@ -327,3 +352,33 @@ footer {
 }
 
 footer a { color: var(--green-600); }
+
+/* Toast */
+.toast {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: .5rem 1.25rem;
+  background: white;
+  color: var(--gray-800);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  font-size: .85rem;
+  font-weight: 500;
+  z-index: 200;
+  animation: toast-fade 2s ease forwards;
+}
+
+.toast.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+@keyframes toast-fade {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+  10%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+  75%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+}

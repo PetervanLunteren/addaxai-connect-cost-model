@@ -225,6 +225,55 @@
     $('metricCoverage').textContent = coveragePct.toFixed(3) + '%';
   }
 
+  /* Expose state for save/load */
+  window.placementGetState = function () {
+    if (!currentPolygon) return null;
+    var latlngs = currentPolygon.getLatLngs()[0];
+    var polygon = latlngs.map(function (ll) { return [ll.lng, ll.lat]; });
+    return {
+      polygon: polygon,
+      cameras: cameras.map(function (c) { return { lng: c.lng, lat: c.lat, angle: c.angle }; })
+    };
+  };
+
+  window.placementSetState = function (state) {
+    clearAll();
+    if (!state || !state.polygon || state.polygon.length < 3) {
+      currentPolygon = null;
+      showEmptyState(true);
+      return;
+    }
+    // Draw polygon
+    var latlngs = state.polygon.map(function (c) { return [c[1], c[0]]; });
+    var layer = L.polygon(latlngs, {
+      color: '#0b5f65',
+      weight: 2,
+      fillOpacity: 0.1
+    });
+    drawnItems.addLayer(layer);
+    currentPolygon = layer;
+    map.fitBounds(layer.getBounds(), { padding: [30, 30] });
+
+    // Restore cameras if provided, otherwise generate fresh
+    if (state.cameras && state.cameras.length > 0) {
+      cameras = state.cameras.map(function (c) { return { lng: c.lng, lat: c.lat, angle: c.angle }; });
+      cameras.forEach(function (cam) {
+        L.circleMarker([cam.lat, cam.lng], {
+          radius: 4,
+          color: '#063e42',
+          fillColor: '#0b5f65',
+          fillOpacity: 1,
+          weight: 1.5
+        }).addTo(cameraLayer);
+      });
+      renderDetectionZones();
+      updateMetrics();
+      showEmptyState(false);
+    } else {
+      onPolygonReady();
+    }
+  };
+
   document.addEventListener('DOMContentLoaded', function () {
     initMap();
     showEmptyState(true);

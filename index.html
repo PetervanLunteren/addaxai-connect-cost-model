@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AddaxAI-Connect cost calculator</title>
+<title>AddaxAI-Connect plan tool</title>
 <link rel="icon" href="favicon.ico">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
@@ -15,7 +15,12 @@
 
 <header>
   <a href="https://github.com/PetervanLunteren/AddaxAI-Connect" target="_blank"><img src="logo.png" alt="AddaxAI"></a>
-  <h1>AddaxAI-Connect</h1>
+  <h1>AddaxAI-Connect plan tool</h1>
+  <div class="header-actions">
+    <button class="header-btn" id="btnSave">Save</button>
+    <button class="header-btn" id="btnLoad">Load</button>
+  </div>
+  <input type="file" id="fileInput" accept=".json" style="display:none">
 </header>
 
 <div class="container">
