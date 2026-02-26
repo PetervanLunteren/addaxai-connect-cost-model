@@ -205,6 +205,10 @@
     font-style: italic;
   }
 
+  .input-row label .caption a {
+    color: var(--teal-500);
+  }
+
   .checkbox-label {
     display: flex;
     align-items: flex-start;
@@ -525,6 +529,7 @@
   <img src="logo.png" alt="AddaxAI">
   <h1>AddaxAI-Connect cost calculator</h1>
   <p>Estimate the costs for your <a href="https://github.com/PetervanLunteren/AddaxAI-Connect" target="_blank">AddaxAI-Connect</a> wildlife monitoring project.</p>
+  <p style="font-size:.8rem; color:var(--gray-500); max-width:600px; margin:.5rem auto 0;">These are estimations to give you a basic idea. We would need to discuss your specific project requirements to provide a full quote.</p>
 </header>
 
 <div class="container">
@@ -542,7 +547,7 @@
           <label class="checkbox-label"><input type="checkbox" id="byo"> I'll bring my own cameras<span class="caption">Skips camera hardware costs, but usually requires a few days of software development to integrate with the platform</span></label>
         </div>
         <div class="input-row camera-row">
-          <label>Active cameras<span class="caption">Cameras with an active connection to the system (includes SIM, SD-cards, batteries, configuration)</span></label>
+          <label>Active cameras<span class="caption">Cameras with an active connection to the system (includes SIM, SD-cards, batteries, configuration). See <a href="https://wiki.smartparks.org/addaxaiconnect/cameras/willfinet40cg" target="_blank">camera details</a></span></label>
           <input type="number" id="activeCameras" value="50" min="0" step="1">
         </div>
         <div class="input-row camera-row">
