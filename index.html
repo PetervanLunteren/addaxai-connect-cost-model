@@ -70,7 +70,7 @@
   header a { color: var(--teal-700); }
 
   .container {
-    max-width: 1100px;
+    max-width: 1280px;
     margin: 0 auto;
     padding: 1.5rem;
   }
@@ -80,10 +80,15 @@
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
     margin-bottom: 1.5rem;
+    align-items: start;
   }
 
-  @media (max-width: 768px) {
-    .grid { grid-template-columns: 1fr; }
+  .main-grid {
+    grid-template-columns: 1fr 2fr;
+  }
+
+  @media (max-width: 900px) {
+    .grid, .main-grid { grid-template-columns: 1fr; }
   }
 
   /* Modal */
@@ -193,10 +198,28 @@
 
   .input-row label .caption {
     display: block;
-    font-size: .75rem;
-    color: var(--gray-500);
+    font-size: .7rem;
+    color: var(--gray-400);
     font-weight: 400;
     margin-top: .1rem;
+    font-style: italic;
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: .5rem;
+    cursor: pointer;
+  }
+
+  .checkbox-label input[type="checkbox"] {
+    margin-top: .2rem;
+    accent-color: var(--teal-700);
+  }
+
+  .camera-row.disabled {
+    opacity: .4;
+    pointer-events: none;
   }
 
   .input-row .desc {
@@ -379,8 +402,8 @@
 
 <div class="container">
 
-  <!-- Inputs -->
-  <div class="grid">
+  <!-- Parameters + Cost breakdown side by side -->
+  <div class="grid main-grid">
     <div class="card">
       <div class="card-header green">Project parameters</div>
       <div class="card-body">
@@ -388,30 +411,44 @@
           <label>Number of years<span class="caption">Project duration, affects mobile data, software maintenance, server maintenance, and server instance costs</span></label>
           <input type="number" id="years" value="1" min="1" step="1">
         </div>
-        <div class="input-row">
+        <div class="input-row checkbox-row">
+          <label class="checkbox-label"><input type="checkbox" id="byo"> I'll bring my own cameras<span class="caption">Skip camera, SD-card, battery, charger, enclosure, and logistics costs</span></label>
+        </div>
+        <div class="input-row camera-row">
           <label>Active cameras<span class="caption">Cameras with an active connection to the system (includes SIM, SD-cards, batteries, configuration)</span></label>
           <input type="number" id="activeCameras" value="25" min="0" step="1">
         </div>
-        <div class="input-row">
+        <div class="input-row camera-row">
           <label>Backup cameras<span class="caption">Spare cameras without an active connection, no SIM or configuration costs</span></label>
           <input type="number" id="backupCameras" value="10" min="0" step="1">
         </div>
-        <div class="input-row">
+        <div class="input-row camera-row">
           <label>Enclosures<span class="caption">Optional protective camera housings</span></label>
           <input type="number" id="enclosures" value="0" min="0" step="1">
         </div>
         <div class="input-row">
           <label>Training sessions<span class="caption">Onboarding sessions to walk through the platform, settings, and workflows</span></label>
-          <input type="number" id="trainingSessions" value="2" min="0" step="1">
+          <input type="number" id="trainingSessions" value="1" min="0" step="1">
         </div>
         <div class="input-row">
           <label>Days of software development<span class="caption">Usually not needed, can be included for custom features or integrations</span></label>
-          <input type="number" id="devDays" value="5" min="0" step="1">
+          <input type="number" id="devDays" value="0" min="0" step="1">
         </div>
         <span class="prices-link" id="openModal">View unit prices</span>
       </div>
     </div>
 
+    <div class="card">
+      <div class="card-header dark">Cost breakdown</div>
+      <div class="card-body" style="padding:0">
+        <table class="output-table">
+          <thead>
+            <tr><th>Description</th><th>Basis</th><th>Unit price</th><th style="text-align:right">Quantity</th><th>Total</th></tr>
+          </thead>
+          <tbody id="outputBody"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <!-- Unit prices modal -->
@@ -433,7 +470,7 @@
             <tr><td>Logistics</td><td class="price">&euro; 10</td><td class="desc">per camera</td></tr>
             <tr><td>SD-card (two sets)</td><td class="price">&euro; 20</td><td class="desc">per camera</td></tr>
             <tr><td>Batteries (two sets)</td><td class="price">&euro; 100</td><td class="desc">per camera</td></tr>
-            <tr><td>Mobile data (SIM)</td><td class="price">&euro; 5</td><td class="desc">per camera / month</td></tr>
+            <tr><td>Mobile data (SIM)*</td><td class="price">&euro; 5</td><td class="desc">per camera / month</td></tr>
             <tr><td>Camera management</td><td class="price">&euro; 0</td><td class="desc">per camera / year</td></tr>
             <tr><td>Battery charger</td><td class="price">&euro; 50</td><td class="desc">per project</td></tr>
             <tr><td>Software setup</td><td class="price">&euro; 1,000</td><td class="desc">per project</td></tr>
@@ -445,21 +482,7 @@
             <tr><td>Training session</td><td class="price">&euro; 1,000</td><td class="desc">per session</td></tr>
           </tbody>
         </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- Output -->
-  <div class="grid">
-    <div class="card full-width">
-      <div class="card-header dark">Cost breakdown</div>
-      <div class="card-body" style="padding:0">
-        <table class="output-table">
-          <thead>
-            <tr><th>Description</th><th>Basis</th><th>Unit price</th><th style="text-align:right">Quantity</th><th>Total</th></tr>
-          </thead>
-          <tbody id="outputBody"></tbody>
-        </table>
+        <p style="font-size:.7rem; color:#9ca3af; padding:.5rem .5rem .25rem; font-style:italic;">* Based on Dutch SIM cards, costs may vary by country.</p>
       </div>
     </div>
   </div>
@@ -503,6 +526,7 @@
   ];
 
   function calculate() {
+    const byo       = $('byo').checked;
     const years     = val('years');
     const active    = val('activeCameras');
     const backup    = val('backupCameras');
@@ -511,14 +535,23 @@
     const devDays   = val('devDays');
     const months    = years * 12;
 
+    // Disable camera inputs when BYO is checked
+    document.querySelectorAll('.camera-row').forEach(row => {
+      row.classList.toggle('disabled', byo);
+    });
+
+    const camQtyActive = byo ? 0 : active;
+    const camQtyBackup = byo ? 0 : backup;
+    const camQtyEncl   = byo ? 0 : enclCount;
+
     const rows = [
-      { name: 'Active cameras',                unit: P.camera,              basis: 'Per item',          qty: active },
-      { name: 'Backup cameras',                unit: P.camera,              basis: 'Per item',          qty: backup },
-      { name: 'Enclosures',                    unit: P.enclosure,           basis: 'Per item',          qty: enclCount },
-      { name: 'Battery charger',               unit: P.charger,             basis: 'Per project',       qty: 1 },
-      { name: 'SD-cards (two sets)',            unit: P.sd,                  basis: 'Per active camera', qty: active },
-      { name: 'Batteries (two sets)',           unit: P.batteries,           basis: 'Per active camera', qty: active },
-      { name: 'Logistics',                     unit: P.logistics,           basis: 'Per item',          qty: active + backup },
+      { name: 'Active cameras',                unit: P.camera,              basis: 'Per item',          qty: camQtyActive },
+      { name: 'Backup cameras',                unit: P.camera,              basis: 'Per item',          qty: camQtyBackup },
+      { name: 'Enclosures',                    unit: P.enclosure,           basis: 'Per item',          qty: camQtyEncl },
+      { name: 'Battery charger',               unit: P.charger,             basis: 'Per project',       qty: byo ? 0 : 1 },
+      { name: 'SD-cards (two sets)',            unit: P.sd,                  basis: 'Per active camera', qty: camQtyActive },
+      { name: 'Batteries (two sets)',           unit: P.batteries,           basis: 'Per active camera', qty: camQtyActive },
+      { name: 'Logistics',                     unit: P.logistics,           basis: 'Per item',          qty: camQtyActive + camQtyBackup },
       { name: 'Mobile data (SIM-card)',         unit: P.sim * months,        basis: 'Per active camera', qty: active },
       { name: 'Camera configuration',          unit: P.config,              basis: 'Per active camera', qty: active },
       { name: 'Camera placement & management', unit: P.camMgmt * years,     basis: 'Per active camera', qty: active },
@@ -618,6 +651,7 @@
   document.querySelectorAll('input[type="number"]').forEach(input => {
     input.addEventListener('input', calculate);
   });
+  $('byo').addEventListener('change', calculate);
 
   // Modal
   const modal = $('pricesModal');
