@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AddaxAI-Connect Cost Calculator</title>
+<style>
+  :root {
+    --green-900: #1a3a2a;
+    --green-800: #234d38;
+    --green-700: #2d6047;
+    --green-600: #377356;
+    --green-500: #419966;
+    --green-400: #5cb87e;
+    --green-300: #84d0a0;
+    --green-200: #b3e4c5;
+    --green-100: #e0f5e8;
+    --green-50: #f0faf4;
+    --amber-500: #d4a030;
+    --amber-100: #fef3cd;
+    --gray-50: #f8fafb;
+    --gray-100: #f0f2f4;
+    --gray-200: #e2e5e8;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --radius: 8px;
+    --shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+    --shadow-md: 0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--gray-800);
+    background: var(--gray-50);
+    line-height: 1.5;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--green-900), var(--green-700));
+    color: white;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+
+  header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: .25rem;
+  }
+
+  header p {
+    opacity: .85;
+    font-size: .95rem;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  header a { color: var(--green-200); }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: .75rem 1.25rem;
+    font-weight: 600;
+    font-size: .9rem;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .card-header.green {
+    background: var(--green-700);
+    color: white;
+  }
+
+  .card-header.dark {
+    background: var(--green-900);
+    color: white;
+  }
+
+  .card-body { padding: 1rem 1.25rem; }
+
+  /* Input rows */
+  .input-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .5rem 0;
+    border-bottom: 1px solid var(--gray-100);
+  }
+
+  .input-row:last-child { border-bottom: none; }
+
+  .input-row label {
+    font-size: .875rem;
+    color: var(--gray-700);
+    flex: 1;
+  }
+
+  .input-row .desc {
+    font-size: .75rem;
+    color: var(--gray-500);
+  }
+
+  .input-row input {
+    width: 90px;
+    text-align: right;
+    padding: .35rem .5rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 4px;
+    font-size: .875rem;
+    color: var(--gray-800);
+    background: var(--gray-50);
+    transition: border-color .15s;
+  }
+
+  .input-row input:focus {
+    outline: none;
+    border-color: var(--green-500);
+    box-shadow: 0 0 0 3px rgba(65,153,102,.15);
+  }
+
+  .unit {
+    font-size: .75rem;
+    color: var(--gray-400);
+    width: 80px;
+    text-align: right;
+    margin-left: .5rem;
+  }
+
+  /* Cost input table */
+  .cost-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .8rem;
+  }
+
+  .cost-table th {
+    text-align: left;
+    padding: .4rem .5rem;
+    background: var(--gray-100);
+    color: var(--gray-600);
+    font-weight: 600;
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+  }
+
+  .cost-table td {
+    padding: .4rem .5rem;
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: middle;
+  }
+
+  .cost-table tr:last-child td { border-bottom: none; }
+
+  .cost-table input {
+    width: 70px;
+    text-align: right;
+    padding: .25rem .4rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 4px;
+    font-size: .8rem;
+    color: var(--gray-800);
+    background: var(--gray-50);
+  }
+
+  .cost-table input:focus {
+    outline: none;
+    border-color: var(--green-500);
+    box-shadow: 0 0 0 3px rgba(65,153,102,.15);
+  }
+
+  .vendor-badge {
+    display: inline-block;
+    padding: .1rem .4rem;
+    border-radius: 3px;
+    font-size: .65rem;
+    font-weight: 600;
+  }
+
+  .vendor-badge.sp { background: var(--green-100); color: var(--green-700); }
+  .vendor-badge.ax { background: var(--amber-100); color: #92702a; }
+
+  /* Output table */
+  .output-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .85rem;
+  }
+
+  .output-table th {
+    text-align: left;
+    padding: .5rem .75rem;
+    background: var(--green-50);
+    color: var(--green-800);
+    font-weight: 600;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+  }
+
+  .output-table th:nth-child(n+2) { text-align: right; }
+
+  .output-table td {
+    padding: .5rem .75rem;
+    border-bottom: 1px solid var(--gray-100);
+  }
+
+  .output-table td:nth-child(n+3) { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .output-table td:nth-child(2) {
+    color: var(--gray-500);
+    font-size: .8rem;
+  }
+
+  .output-table tr:last-child td { border-bottom: none; }
+
+  .output-table .total-row td {
+    font-weight: 700;
+    font-size: 1rem;
+    background: var(--green-50);
+    border-top: 2px solid var(--green-300);
+    border-bottom: none;
+    color: var(--green-900);
+  }
+
+  /* Chart */
+  .chart-container {
+    padding: 1.25rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .chart-svg { flex-shrink: 0; }
+
+  .legend {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    font-size: .8rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  .legend-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .legend-value {
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    padding-left: 1rem;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    font-size: .8rem;
+    color: var(--gray-500);
+  }
+
+  footer a { color: var(--green-600); }
+
+  .full-width { grid-column: 1 / -1; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AddaxAI-Connect Cost Calculator</h1>
+  <p>Estimate the costs for your <a href="https://github.com/PetervanLunteren/AddaxAI-Connect" target="_blank">AddaxAI-Connect</a> wildlife monitoring project.</p>
+</header>
+
+<div class="container">
+
+  <!-- Inputs -->
+  <div class="grid">
+    <div class="card">
+      <div class="card-header green">Project Parameters</div>
+      <div class="card-body">
+        <div class="input-row">
+          <label>Number of years</label>
+          <input type="number" id="years" value="1" min="1" step="1">
+        </div>
+        <div class="input-row">
+          <label>Active cameras</label>
+          <input type="number" id="activeCameras" value="25" min="0" step="1">
+        </div>
+        <div class="input-row">
+          <label>Backup cameras</label>
+          <input type="number" id="backupCameras" value="10" min="0" step="1">
+        </div>
+        <div class="input-row">
+          <label>Enclosures</label>
+          <input type="number" id="enclosures" value="0" min="0" step="1">
+        </div>
+        <div class="input-row">
+          <label>Training sessions</label>
+          <input type="number" id="trainingSessions" value="2" min="0" step="1">
+        </div>
+        <div class="input-row">
+          <label>Days of software development</label>
+          <input type="number" id="devDays" value="5" min="0" step="1">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header green">Unit Prices</div>
+      <div class="card-body" style="padding:.5rem">
+        <table class="cost-table">
+          <thead>
+            <tr><th>Item</th><th>Price (&euro;)</th><th>Type</th><th>Vendor</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Camera</td>
+              <td><input type="number" id="priceCamera" value="130" min="0" step="1"></td>
+              <td class="desc">per camera</td>
+              <td><span class="vendor-badge sp">Smart Parks</span></td>
+            </tr>
+            <tr>
+              <td>Enclosure</td>
+              <td><input type="number" id="priceEnclosure" value="25" min="0" step="1"></td>
+              <td class="desc">per enclosure</td>
+              <td><span class="vendor-badge sp">Smart Parks</span></td>
+            </tr>
+            <tr>
+              <td>Configuration</td>
+              <td><input type="number" id="priceConfig" value="25" min="0" step="1"></td>
+              <td class="desc">per camera</td>
+              <td><span class="vendor-badge ax">Addax</span></td>
+            </tr>
+            <tr>
+              <td>Logistics</td>
+              <td><input type="number" id="priceLogistics" value="10" min="0" step="1"></td>
+              <td class="desc">per camera</td>
+              <td><span class="vendor-badge sp">Smart Parks</span></td>
+            </tr>
+            <tr>
+              <td>SD-card (two sets)</td>
+              <td><input type="number" id="priceSD" value="20" min="0" step="1"></td>
+              <td class="desc">per camera</td>
+              <td><span class="vendor-badge sp">Smart Parks</span></td>
+            </tr>
+            <tr>
+              <td>Batteries (two sets)</td>
+              <td><input type="number" id="priceBatteries" value="100" min="0" step="1"></td>
+              <td class="desc">per camera</td>
+              <td><span class="vendor-badge sp">Smart Parks</span></td>
+            </tr>
+            <tr>
+              <td>Mobile data (SIM)</td>
+              <td><input type="number" id="priceSIM" value="5" min="0" step="0.5"></td>
+              <td class="desc">per camera / month</td>
+              <td><span class="vendor-badge sp">Smart Parks</span></td>
+            </tr>
+            <tr>
+              <td>Camera management</td>
+              <td><input type="number" id="priceCamMgmt" value="0" min="0" step="1"></td>
+              <td class="desc">per camera / year</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Battery charger</td>
+              <td><input type="number" id="priceCharger" value="50" min="0" step="1"></td>
+              <td class="desc">per project</td>
+              <td><span class="vendor-badge sp">Smart Parks</span></td>
+            </tr>
+            <tr>
+              <td>Software setup</td>
+              <td><input type="number" id="priceSWSetup" value="1000" min="0" step="50"></td>
+              <td class="desc">per project</td>
+              <td><span class="vendor-badge ax">Addax</span></td>
+            </tr>
+            <tr>
+              <td>Software maintenance</td>
+              <td><input type="number" id="priceSWMaint" value="250" min="0" step="10"></td>
+              <td class="desc">per project / month</td>
+              <td><span class="vendor-badge ax">Addax</span></td>
+            </tr>
+            <tr>
+              <td>Software development</td>
+              <td><input type="number" id="priceSWDev" value="1000" min="0" step="50"></td>
+              <td class="desc">per day</td>
+              <td><span class="vendor-badge ax">Addax</span></td>
+            </tr>
+            <tr>
+              <td>Server setup</td>
+              <td><input type="number" id="priceSrvSetup" value="1000" min="0" step="50"></td>
+              <td class="desc">per project</td>
+              <td><span class="vendor-badge sp">Smart Parks</span></td>
+            </tr>
+            <tr>
+              <td>Server maintenance</td>
+              <td><input type="number" id="priceSrvMaint" value="250" min="0" step="10"></td>
+              <td class="desc">per project / month</td>
+              <td><span class="vendor-badge sp">Smart Parks</span></td>
+            </tr>
+            <tr>
+              <td>Server instance</td>
+              <td><input type="number" id="priceSrvInstance" value="100" min="0" step="10"></td>
+              <td class="desc">per project / month</td>
+              <td><span class="vendor-badge ax">Addax</span></td>
+            </tr>
+            <tr>
+              <td>Training session</td>
+              <td><input type="number" id="priceTraining" value="1000" min="0" step="50"></td>
+              <td class="desc">per session</td>
+              <td><span class="vendor-badge ax">Addax</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Output -->
+  <div class="grid">
+    <div class="card full-width">
+      <div class="card-header dark">Cost Breakdown</div>
+      <div class="card-body" style="padding:0">
+        <table class="output-table">
+          <thead>
+            <tr><th>Description</th><th>Basis</th><th style="text-align:right">Unit price</th><th style="text-align:right">Quantity</th><th style="text-align:right">Total</th></tr>
+          </thead>
+          <tbody id="outputBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart -->
+  <div class="grid">
+    <div class="card full-width">
+      <div class="card-header dark">Cost Distribution</div>
+      <div class="chart-container">
+        <svg id="donut" class="chart-svg" width="220" height="220" viewBox="0 0 220 220"></svg>
+        <div id="legend" class="legend"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="https://github.com/PetervanLunteren/AddaxAI-Connect" target="_blank">AddaxAI-Connect</a> &mdash; Automated wildlife monitoring
+</footer>
+
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const val = id => parseFloat($(id).value) || 0;
+  const eur = n => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  const COLORS = [
+    '#2d6047','#419966','#5cb87e','#84d0a0','#b3e4c5',
+    '#d4a030','#e8be5a','#f0d68a','#1a3a2a','#377356',
+    '#6ba68a','#234d38','#92702a','#b8963c','#c9ae60',
+    '#4d8c6e','#a0c4b0'
+  ];
+
+  function calculate() {
+    const years     = val('years');
+    const active    = val('activeCameras');
+    const backup    = val('backupCameras');
+    const enclCount = val('enclosures');
+    const sessions  = val('trainingSessions');
+    const devDays   = val('devDays');
+    const months    = years * 12;
+
+    const rows = [
+      { name: 'Active cameras',                unit: val('priceCamera'),      basis: 'Per item',          qty: active },
+      { name: 'Backup cameras',                unit: val('priceCamera'),      basis: 'Per item',          qty: backup },
+      { name: 'Enclosures',                    unit: val('priceEnclosure'),   basis: 'Per item',          qty: enclCount },
+      { name: 'Battery charger',               unit: val('priceCharger'),     basis: 'Per project',       qty: 1 },
+      { name: 'SD-cards (two sets)',            unit: val('priceSD'),          basis: 'Per active camera', qty: active },
+      { name: 'Batteries (two sets)',           unit: val('priceBatteries'),   basis: 'Per active camera', qty: active },
+      { name: 'Logistics',                     unit: val('priceLogistics'),   basis: 'Per item',          qty: active + backup },
+      { name: 'Mobile data (SIM-card)',         unit: val('priceSIM') * months, basis: 'Per active camera', qty: active },
+      { name: 'Camera configuration',          unit: val('priceConfig'),      basis: 'Per active camera', qty: active },
+      { name: 'Camera placement & management', unit: val('priceCamMgmt') * years, basis: 'Per active camera', qty: active },
+      { name: 'Server instance',               unit: val('priceSrvInstance') * months, basis: 'Per project', qty: 1 },
+      { name: 'Server setup',                  unit: val('priceSrvSetup'),    basis: 'Per project',       qty: 1 },
+      { name: 'Server maintenance',            unit: val('priceSrvMaint') * months, basis: 'Per project', qty: 1 },
+      { name: 'Software setup',                unit: val('priceSWSetup'),     basis: 'Per project',       qty: 1 },
+      { name: 'Software maintenance',          unit: val('priceSWMaint') * months, basis: 'Per project',  qty: 1 },
+      { name: 'Software development',          unit: val('priceSWDev'),       basis: 'Per day',           qty: devDays },
+      { name: 'Training',                      unit: val('priceTraining'),    basis: 'Per session',       qty: sessions },
+    ];
+
+    rows.forEach(r => r.total = r.unit * r.qty);
+    const grandTotal = rows.reduce((s, r) => s + r.total, 0);
+
+    // Render output table
+    const tbody = $('outputBody');
+    tbody.innerHTML = rows.map(r =>
+      `<tr>
+        <td>${r.name}</td>
+        <td>${r.basis}</td>
+        <td style="text-align:right">&euro; ${eur(r.unit)}</td>
+        <td style="text-align:right">${r.qty}</td>
+        <td style="text-align:right">&euro; ${eur(r.total)}</td>
+      </tr>`
+    ).join('') +
+      `<tr class="total-row">
+        <td colspan="4">Total</td>
+        <td style="text-align:right">&euro; ${eur(grandTotal)}</td>
+      </tr>`;
+
+    // Render donut chart — group small slices into "Other"
+    const nonZero = rows.filter(r => r.total > 0);
+    const threshold = grandTotal * 0.03;
+    let chartData = [];
+    let otherTotal = 0;
+
+    nonZero.forEach((r, i) => {
+      if (r.total < threshold) {
+        otherTotal += r.total;
+      } else {
+        chartData.push({ name: r.name, value: r.total, color: COLORS[i % COLORS.length] });
+      }
+    });
+    if (otherTotal > 0) {
+      chartData.push({ name: 'Other', value: otherTotal, color: '#9ca3af' });
+    }
+
+    const svg = $('donut');
+    const legend = $('legend');
+
+    if (grandTotal === 0) {
+      svg.innerHTML = '<text x="110" y="115" text-anchor="middle" fill="#9ca3af" font-size="14">No costs</text>';
+      legend.innerHTML = '';
+      return;
+    }
+
+    const cx = 110, cy = 110, R = 95, r = 55;
+    let angle = -Math.PI / 2;
+    let paths = '';
+
+    chartData.forEach(d => {
+      const frac = d.value / grandTotal;
+      const a1 = angle;
+      const a2 = angle + frac * 2 * Math.PI;
+      const large = frac > 0.5 ? 1 : 0;
+
+      const x1o = cx + R * Math.cos(a1);
+      const y1o = cy + R * Math.sin(a1);
+      const x2o = cx + R * Math.cos(a2);
+      const y2o = cy + R * Math.sin(a2);
+      const x1i = cx + r * Math.cos(a2);
+      const y1i = cy + r * Math.sin(a2);
+      const x2i = cx + r * Math.cos(a1);
+      const y2i = cy + r * Math.sin(a1);
+
+      paths += `<path d="M${x1o},${y1o} A${R},${R} 0 ${large} 1 ${x2o},${y2o} L${x1i},${y1i} A${r},${r} 0 ${large} 0 ${x2i},${y2i} Z" fill="${d.color}"/>`;
+      angle = a2;
+    });
+
+    // Center text
+    paths += `<text x="${cx}" y="${cy - 6}" text-anchor="middle" fill="#1f2937" font-size="12" font-weight="600">&euro; ${eur(grandTotal)}</text>`;
+    paths += `<text x="${cx}" y="${cy + 12}" text-anchor="middle" fill="#6b7280" font-size="10">total</text>`;
+
+    svg.innerHTML = paths;
+
+    legend.innerHTML = chartData.map(d =>
+      `<div class="legend-item">
+        <span class="legend-swatch" style="background:${d.color}"></span>
+        <span>${d.name}</span>
+        <span class="legend-value">&euro; ${eur(d.value)}</span>
+      </div>`
+    ).join('');
+  }
+
+  // Attach listeners to all inputs
+  document.querySelectorAll('input[type="number"]').forEach(input => {
+    input.addEventListener('input', calculate);
+  });
+
+  // Initial calculation
+  calculate();
+})();
+</script>
+
+</body>
+</html>
