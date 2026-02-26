@@ -281,18 +281,30 @@
     letter-spacing: .03em;
   }
 
-  .output-table th:nth-child(n+2) { text-align: right; }
+  .output-table th:nth-child(4) { text-align: right; }
 
   .output-table td {
     padding: .5rem .75rem;
     border-bottom: 1px solid var(--gray-100);
   }
 
-  .output-table td:nth-child(n+3) { text-align: right; font-variant-numeric: tabular-nums; }
+  .output-table td:nth-child(n+3) { font-variant-numeric: tabular-nums; }
 
   .output-table td:nth-child(2) {
     color: var(--gray-500);
     font-size: .8rem;
+  }
+
+  .output-table td.qty { text-align: right; }
+
+  .output-table .currency {
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
+  }
+
+  .output-table .currency span:last-child {
+    font-variant-numeric: tabular-nums;
   }
 
   .output-table tr:last-child td { border-bottom: none; }
@@ -444,7 +456,7 @@
       <div class="card-body" style="padding:0">
         <table class="output-table">
           <thead>
-            <tr><th>Description</th><th>Basis</th><th style="text-align:right">Unit price</th><th style="text-align:right">Quantity</th><th style="text-align:right">Total</th></tr>
+            <tr><th>Description</th><th>Basis</th><th>Unit price</th><th style="text-align:right">Quantity</th><th>Total</th></tr>
           </thead>
           <tbody id="outputBody"></tbody>
         </table>
@@ -528,14 +540,14 @@
       `<tr>
         <td>${r.name}</td>
         <td>${r.basis}</td>
-        <td style="text-align:right">&euro; ${eur(r.unit)}</td>
-        <td style="text-align:right">${r.qty}</td>
-        <td style="text-align:right">&euro; ${eur(r.total)}</td>
+        <td><div class="currency"><span>&euro;</span><span>${eur(r.unit)}</span></div></td>
+        <td class="qty">${r.qty}</td>
+        <td><div class="currency"><span>&euro;</span><span>${eur(r.total)}</span></div></td>
       </tr>`
     ).join('') +
       `<tr class="total-row">
         <td colspan="4">Total</td>
-        <td style="text-align:right">&euro; ${eur(grandTotal)}</td>
+        <td><div class="currency"><span>&euro;</span><span>${eur(grandTotal)}</span></div></td>
       </tr>`;
 
     // Render donut chart — group small slices into "Other"
