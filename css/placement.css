@@ -64,17 +64,15 @@
 /* Empty state */
 .map-empty-state {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 12px;
+  right: 12px;
   z-index: 1000;
   background: white;
   border-radius: var(--radius);
   box-shadow: var(--shadow-md);
-  padding: 1.5rem 2rem;
-  text-align: center;
+  padding: .75rem 1rem;
   pointer-events: none;
-  max-width: 340px;
+  max-width: 260px;
 }
 
 .map-empty-state p {
@@ -100,25 +98,6 @@
   border-bottom: none;
   padding: 0;
   flex: 0 0 auto;
+  gap: .75rem;
 }
 
-.btn-regenerate {
-  padding: .4rem 1rem;
-  font-size: .8rem;
-  font-weight: 600;
-  color: white;
-  background: var(--teal-700);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background .15s;
-}
-
-.btn-regenerate:hover {
-  background: var(--teal-600);
-}
-
-.btn-regenerate:disabled {
-  opacity: .4;
-  cursor: not-allowed;
-}

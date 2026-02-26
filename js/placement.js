@@ -82,15 +82,12 @@
   function showEmptyState(show) {
     var el = $('mapEmptyState');
     var panel = $('metricsPanel');
-    var btn = $('btnRegenerate');
     if (show) {
       el.classList.remove('hidden');
       panel.classList.remove('visible');
-      btn.disabled = true;
     } else {
       el.classList.add('hidden');
       panel.classList.add('visible');
-      btn.disabled = false;
     }
   }
 
@@ -228,16 +225,9 @@
     $('metricCoverage').textContent = coveragePct.toFixed(3) + '%';
   }
 
-  function regenerate() {
-    if (!currentPolygon) return;
-    onPolygonReady();
-  }
-
   document.addEventListener('DOMContentLoaded', function () {
     initMap();
     showEmptyState(true);
-
-    $('btnRegenerate').addEventListener('click', regenerate);
 
     $('placementCameras').addEventListener('input', function () {
       if (currentPolygon) {
