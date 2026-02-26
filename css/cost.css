@@ -1,0 +1,204 @@
+/* Cost input table */
+.cost-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .8rem;
+}
+
+.cost-table th {
+  text-align: left;
+  padding: .4rem .5rem;
+  background: var(--gray-100);
+  color: var(--gray-600);
+  font-weight: 600;
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.cost-table td {
+  padding: .4rem .5rem;
+  border-bottom: 1px solid var(--gray-100);
+  vertical-align: middle;
+}
+
+.cost-table tr:last-child td { border-bottom: none; }
+
+/* Output table */
+.output-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+
+.output-table th {
+  text-align: left;
+  padding: .5rem .75rem;
+  background: var(--teal-50);
+  color: var(--teal-800);
+  font-weight: 600;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.output-table th:nth-child(4) { text-align: right; }
+
+.output-table td {
+  padding: .5rem .75rem;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.output-table td:nth-child(n+3) { font-variant-numeric: tabular-nums; }
+
+.output-table td:nth-child(2) {
+  color: var(--gray-500);
+  font-size: .8rem;
+}
+
+.output-table td.qty { text-align: right; }
+
+.output-table .currency {
+  display: flex;
+  justify-content: space-between;
+  gap: .5rem;
+}
+
+.output-table .currency span:last-child {
+  font-variant-numeric: tabular-nums;
+}
+
+.output-table tr:last-child td { border-bottom: none; }
+
+.output-table .section-row td {
+  font-weight: 700;
+  font-size: .8rem;
+  text-transform: none;
+  color: var(--gray-800);
+  background: white;
+  padding: .6rem .75rem .3rem;
+  border-bottom: 2px solid var(--teal-300);
+  border-left: 3px solid var(--teal-700);
+}
+
+.output-table .metric-row td {
+  font-size: .8rem;
+  color: var(--gray-500);
+  background: var(--teal-50);
+  border-bottom: none;
+  font-style: italic;
+}
+
+.output-table .total-row td {
+  font-weight: 700;
+  font-size: 1rem;
+  background: var(--teal-50);
+  border-top: 2px solid var(--teal-300);
+  border-bottom: none;
+  color: var(--teal-900);
+}
+
+/* Chart */
+.chart-container {
+  padding: 1.25rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.chart-svg { flex-shrink: 0; }
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  font-size: .8rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.legend-value {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  padding-left: 1rem;
+}
+
+/* Collapsible / Scaling */
+.collapsible {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.collapsible-toggle {
+  padding: .75rem 1.25rem;
+  font-weight: 600;
+  font-size: .85rem;
+  color: var(--teal-700);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.collapsible-toggle::-webkit-details-marker { display: none; }
+
+.collapsible-toggle::before {
+  content: '\25B6';
+  font-size: .6rem;
+  transition: transform .2s;
+}
+
+details[open] > .collapsible-toggle::before {
+  transform: rotate(90deg);
+}
+
+.collapsible-body {
+  padding: 0 1.25rem 1.25rem;
+}
+
+.collapsible-body .grid {
+  margin-bottom: 0;
+}
+
+.scaling-table th,
+.scaling-table td {
+  text-align: center;
+  font-size: .8rem;
+  padding: .4rem .6rem;
+}
+
+.scaling-table .current-cell {
+  background: var(--teal-50);
+  font-weight: 700;
+  color: var(--teal-700);
+}
+
+.scaling-table .row-header {
+  text-align: left;
+  font-weight: 600;
+  color: var(--gray-700);
+  white-space: nowrap;
+}
+
+.scaling-table thead th {
+  background: var(--teal-50);
+  color: var(--teal-800);
+}

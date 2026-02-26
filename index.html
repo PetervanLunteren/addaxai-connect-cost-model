@@ -5,508 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AddaxAI-Connect cost calculator</title>
 <link rel="icon" href="favicon.ico">
-<style>
-  :root {
-    --teal-900: #063e42;
-    --teal-800: #094f54;
-    --teal-700: #0b5f65;
-    --teal-600: #0e7a82;
-    --teal-500: #12949d;
-    --teal-400: #2db3bc;
-    --teal-300: #6dcdd4;
-    --teal-200: #a8e1e5;
-    --teal-100: #d8f2f4;
-    --teal-50: #eef9fa;
-    --amber-500: #d4a030;
-    --amber-100: #fef3cd;
-    --gray-50: #f8fafb;
-    --gray-100: #f0f2f4;
-    --gray-200: #e2e5e8;
-    --gray-400: #9ca3af;
-    --gray-500: #6b7280;
-    --gray-600: #4b5563;
-    --gray-700: #374151;
-    --gray-800: #1f2937;
-    --radius: 8px;
-    --shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
-    --shadow-md: 0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06);
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    color: var(--gray-800);
-    background: var(--gray-50);
-    line-height: 1.5;
-  }
-
-  header {
-    background: white;
-    color: var(--teal-900);
-    padding: 2rem 1.5rem 1.5rem;
-    text-align: center;
-    border-bottom: 3px solid var(--teal-700);
-  }
-
-  header img {
-    height: 50px;
-    margin-bottom: .75rem;
-  }
-
-  header h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--teal-700);
-    margin-bottom: .25rem;
-  }
-
-  header p {
-    color: var(--gray-600);
-    font-size: .95rem;
-    max-width: 540px;
-    margin: 0 auto;
-  }
-
-  header a { color: var(--teal-700); }
-
-  .container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 1.5rem;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-    align-items: start;
-  }
-
-  .main-grid {
-    grid-template-columns: 1fr 2fr;
-  }
-
-  @media (max-width: 900px) {
-    .grid, .main-grid { grid-template-columns: 1fr; }
-  }
-
-  /* Modal */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.4);
-    z-index: 100;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .modal-overlay.open { display: flex; }
-
-  .modal {
-    background: white;
-    border-radius: var(--radius);
-    box-shadow: 0 20px 60px rgba(0,0,0,.2);
-    max-width: 520px;
-    width: 90%;
-    max-height: 85vh;
-    overflow-y: auto;
-  }
-
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: .75rem 1.25rem;
-    background: var(--teal-700);
-    color: white;
-    font-weight: 600;
-    font-size: .9rem;
-    border-radius: var(--radius) var(--radius) 0 0;
-  }
-
-  .modal-close {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.25rem;
-    cursor: pointer;
-    padding: 0 .25rem;
-    line-height: 1;
-    opacity: .8;
-  }
-
-  .modal-close:hover { opacity: 1; }
-
-  .modal-body { padding: .5rem; }
-
-  .prices-link {
-    display: inline-block;
-    margin-top: 1rem;
-    font-size: .85rem;
-    color: var(--teal-700);
-    cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-
-  .prices-link:hover { color: var(--teal-900); }
-
-  .card {
-    background: white;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-  }
-
-  .card-header {
-    padding: .75rem 1.25rem;
-    font-weight: 600;
-    font-size: .9rem;
-    border-bottom: 1px solid var(--gray-200);
-  }
-
-  .card-header.green {
-    background: var(--teal-700);
-    color: white;
-  }
-
-  .card-header.dark {
-    background: var(--teal-900);
-    color: white;
-  }
-
-  .card-body { padding: 1rem 1.25rem; }
-
-  /* Input rows */
-  .input-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: .5rem 0;
-    border-bottom: 1px solid var(--gray-100);
-  }
-
-  .input-row:last-child { border-bottom: none; }
-
-  .input-row label {
-    font-size: .875rem;
-    color: var(--gray-700);
-    flex: 1;
-  }
-
-  .input-row label .caption {
-    display: block;
-    font-size: .7rem;
-    color: var(--gray-400);
-    font-weight: 400;
-    margin-top: .1rem;
-    font-style: italic;
-  }
-
-  .input-row label .caption a {
-    color: var(--teal-500);
-  }
-
-  .checkbox-label {
-    display: flex;
-    align-items: flex-start;
-    gap: .5rem;
-    cursor: pointer;
-  }
-
-  .checkbox-label input[type="checkbox"] {
-    margin-top: .2rem;
-    accent-color: var(--teal-700);
-  }
-
-  .camera-row.disabled {
-    opacity: .4;
-    pointer-events: none;
-  }
-
-  .input-row .desc {
-    font-size: .75rem;
-    color: var(--gray-500);
-  }
-
-  .input-row select {
-    width: 90px;
-    padding: .35rem .5rem;
-    border: 1px solid var(--gray-200);
-    border-radius: 4px;
-    font-size: .875rem;
-    color: var(--gray-800);
-    background: var(--gray-50);
-    cursor: pointer;
-  }
-
-  .input-row select:focus {
-    outline: none;
-    border-color: var(--teal-500);
-    box-shadow: 0 0 0 3px rgba(11,95,101,.15);
-  }
-
-  .input-row input {
-    width: 90px;
-    text-align: right;
-    padding: .35rem .5rem;
-    border: 1px solid var(--gray-200);
-    border-radius: 4px;
-    font-size: .875rem;
-    color: var(--gray-800);
-    background: var(--gray-50);
-    transition: border-color .15s;
-  }
-
-  .input-row input:focus {
-    outline: none;
-    border-color: var(--teal-500);
-    box-shadow: 0 0 0 3px rgba(65,153,102,.15);
-  }
-
-  .unit {
-    font-size: .75rem;
-    color: var(--gray-400);
-    width: 80px;
-    text-align: right;
-    margin-left: .5rem;
-  }
-
-  /* Cost input table */
-  .cost-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: .8rem;
-  }
-
-  .cost-table th {
-    text-align: left;
-    padding: .4rem .5rem;
-    background: var(--gray-100);
-    color: var(--gray-600);
-    font-weight: 600;
-    font-size: .7rem;
-    text-transform: uppercase;
-    letter-spacing: .03em;
-  }
-
-  .cost-table td {
-    padding: .4rem .5rem;
-    border-bottom: 1px solid var(--gray-100);
-    vertical-align: middle;
-  }
-
-  .cost-table tr:last-child td { border-bottom: none; }
-
-  .modal-input {
-    width: 80px;
-    text-align: right;
-    padding: .25rem .4rem;
-    border: 1px solid var(--gray-200);
-    border-radius: 4px;
-    font-size: .8rem;
-    color: var(--gray-800);
-    background: var(--gray-50);
-  }
-
-  .modal-input:focus {
-    outline: none;
-    border-color: var(--teal-500);
-    box-shadow: 0 0 0 3px rgba(11,95,101,.15);
-  }
-
-  /* Output table */
-  .output-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: .85rem;
-  }
-
-  .output-table th {
-    text-align: left;
-    padding: .5rem .75rem;
-    background: var(--teal-50);
-    color: var(--teal-800);
-    font-weight: 600;
-    font-size: .75rem;
-    text-transform: uppercase;
-    letter-spacing: .03em;
-  }
-
-  .output-table th:nth-child(4) { text-align: right; }
-
-  .output-table td {
-    padding: .5rem .75rem;
-    border-bottom: 1px solid var(--gray-100);
-  }
-
-  .output-table td:nth-child(n+3) { font-variant-numeric: tabular-nums; }
-
-  .output-table td:nth-child(2) {
-    color: var(--gray-500);
-    font-size: .8rem;
-  }
-
-  .output-table td.qty { text-align: right; }
-
-  .output-table .currency {
-    display: flex;
-    justify-content: space-between;
-    gap: .5rem;
-  }
-
-  .output-table .currency span:last-child {
-    font-variant-numeric: tabular-nums;
-  }
-
-  .output-table tr:last-child td { border-bottom: none; }
-
-  .output-table .section-row td {
-    font-weight: 700;
-    font-size: .8rem;
-    text-transform: none;
-    color: var(--gray-800);
-    background: white;
-    padding: .6rem .75rem .3rem;
-    border-bottom: 2px solid var(--teal-300);
-    border-left: 3px solid var(--teal-700);
-  }
-
-  .output-table .metric-row td {
-    font-size: .8rem;
-    color: var(--gray-500);
-    background: var(--teal-50);
-    border-bottom: none;
-    font-style: italic;
-  }
-
-  .output-table .total-row td {
-    font-weight: 700;
-    font-size: 1rem;
-    background: var(--teal-50);
-    border-top: 2px solid var(--teal-300);
-    border-bottom: none;
-    color: var(--teal-900);
-  }
-
-  /* Chart */
-  .chart-container {
-    padding: 1.25rem;
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .chart-svg { flex-shrink: 0; }
-
-  .legend {
-    display: flex;
-    flex-direction: column;
-    gap: .35rem;
-    font-size: .8rem;
-  }
-
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-  }
-
-  .legend-swatch {
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
-    flex-shrink: 0;
-  }
-
-  .legend-value {
-    margin-left: auto;
-    font-variant-numeric: tabular-nums;
-    font-weight: 600;
-    padding-left: 1rem;
-  }
-
-  .collapsible {
-    background: white;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    margin-bottom: 1.5rem;
-    overflow: hidden;
-  }
-
-  .collapsible-toggle {
-    padding: .75rem 1.25rem;
-    font-weight: 600;
-    font-size: .85rem;
-    color: var(--teal-700);
-    cursor: pointer;
-    list-style: none;
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-  }
-
-  .collapsible-toggle::-webkit-details-marker { display: none; }
-
-  .collapsible-toggle::before {
-    content: '\25B6';
-    font-size: .6rem;
-    transition: transform .2s;
-  }
-
-  details[open] > .collapsible-toggle::before {
-    transform: rotate(90deg);
-  }
-
-  .collapsible-body {
-    padding: 0 1.25rem 1.25rem;
-  }
-
-  .collapsible-body .grid {
-    margin-bottom: 0;
-  }
-
-  .scaling-table th,
-  .scaling-table td {
-    text-align: center;
-    font-size: .8rem;
-    padding: .4rem .6rem;
-  }
-
-  .scaling-table .current-cell {
-    background: var(--teal-50);
-    font-weight: 700;
-    color: var(--teal-700);
-  }
-
-  .scaling-table .row-header {
-    text-align: left;
-    font-weight: 600;
-    color: var(--gray-700);
-    white-space: nowrap;
-  }
-
-  .scaling-table thead th {
-    background: var(--teal-50);
-    color: var(--teal-800);
-  }
-
-  footer {
-    text-align: center;
-    padding: 2rem 1rem;
-    font-size: .8rem;
-    color: var(--gray-500);
-  }
-
-  footer a { color: var(--green-600); }
-
-  .full-width { grid-column: 1 / -1; }
-</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/cost.css">
+<link rel="stylesheet" href="css/placement.css">
 </head>
 <body>
 
@@ -519,120 +22,161 @@
 
 <div class="container">
 
-  <!-- Parameters + Cost breakdown side by side -->
-  <div class="grid main-grid">
-    <div class="card">
-      <div class="card-header green">Project parameters</div>
-      <div class="card-body">
-        <div class="input-row">
-          <label>Number of years<span class="caption">Project duration, affects mobile data, software maintenance, server maintenance, and server instance costs</span></label>
-          <select id="years"><option value="1">1 year</option><option value="2">2 years</option></select>
-        </div>
-        <div class="input-row checkbox-row">
-          <label class="checkbox-label"><input type="checkbox" id="byo"> I'll bring my own cameras<span class="caption">Skips camera hardware costs, but usually requires a few days of software development to integrate with the platform</span></label>
-        </div>
-        <div class="input-row camera-row">
-          <label>Active cameras<span class="caption">Cameras with an active connection to the system (includes SIM, SD-cards, batteries, configuration). See <a href="https://wiki.smartparks.org/addaxaiconnect/cameras/willfinet40cg" target="_blank">camera details</a></span></label>
-          <input type="number" id="activeCameras" value="50" min="0" step="1">
-        </div>
-        <div class="input-row camera-row">
-          <label>Backup cameras<span class="caption">Spare cameras without an active connection, no SIM or configuration costs</span></label>
-          <input type="number" id="backupCameras" value="5" min="0" step="1">
-        </div>
-        <div class="input-row camera-row">
-          <label>Enclosures<span class="caption">Optional protective camera housings</span></label>
-          <input type="number" id="enclosures" value="0" min="0" step="1">
-        </div>
-        <div class="input-row checkbox-row">
-          <label class="checkbox-label"><input type="checkbox" id="camMgmt"> Include camera placement and management<span class="caption">In the Netherlands handled by Faunabeheer Midden-Nederland, in other countries this needs to be arranged separately</span></label>
-        </div>
-        <div class="input-row">
-          <label>Training sessions<span class="caption">Onboarding sessions to walk through the platform, settings, and workflows</span></label>
-          <input type="number" id="trainingSessions" value="1" min="0" step="1">
-        </div>
-        <div class="input-row">
-          <label>Days of software development<span class="caption">Usually not needed, can be included for custom features or integrations</span></label>
-          <input type="number" id="devDays" value="0" min="0" step="1">
-        </div>
-        <span class="prices-link" id="openModal">Configure unit prices</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header dark">Cost breakdown</div>
-      <div class="card-body" style="padding:0">
-        <table class="output-table">
-          <thead>
-            <tr><th>Description</th><th>Basis</th><th>Unit price</th><th style="text-align:right">Quantity</th><th>Total</th></tr>
-          </thead>
-          <tbody id="outputBody"></tbody>
-        </table>
-      </div>
-    </div>
+  <!-- Tab bar -->
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="tab-cost">Cost calculator</button>
+    <button class="tab-btn" data-tab="tab-placement">Camera placement</button>
   </div>
 
-  <!-- Unit prices modal -->
-  <div class="modal-overlay" id="pricesModal">
-    <div class="modal">
-      <div class="modal-header">
-        Unit prices
-        <button class="modal-close" id="closeModal">&times;</button>
+  <!-- ============ COST TAB ============ -->
+  <div class="tab-pane active" id="tab-cost">
+
+    <!-- Parameters + Cost breakdown side by side -->
+    <div class="grid main-grid">
+      <div class="card">
+        <div class="card-header green">Project parameters</div>
+        <div class="card-body">
+          <div class="input-row">
+            <label>Number of years<span class="caption">Project duration, affects mobile data, software maintenance, server maintenance, and server instance costs</span></label>
+            <select id="years"><option value="1">1 year</option><option value="2">2 years</option></select>
+          </div>
+          <div class="input-row checkbox-row">
+            <label class="checkbox-label"><input type="checkbox" id="byo"> I'll bring my own cameras<span class="caption">Skips camera hardware costs, but usually requires a few days of software development to integrate with the platform</span></label>
+          </div>
+          <div class="input-row camera-row">
+            <label>Active cameras<span class="caption">Cameras with an active connection to the system (includes SIM, SD-cards, batteries, configuration). See <a href="https://wiki.smartparks.org/addaxaiconnect/cameras/willfinet40cg" target="_blank">camera details</a></span></label>
+            <input type="number" id="activeCameras" value="50" min="0" step="1">
+          </div>
+          <div class="input-row camera-row">
+            <label>Backup cameras<span class="caption">Spare cameras without an active connection, no SIM or configuration costs</span></label>
+            <input type="number" id="backupCameras" value="5" min="0" step="1">
+          </div>
+          <div class="input-row camera-row">
+            <label>Enclosures<span class="caption">Optional protective camera housings</span></label>
+            <input type="number" id="enclosures" value="0" min="0" step="1">
+          </div>
+          <div class="input-row checkbox-row">
+            <label class="checkbox-label"><input type="checkbox" id="camMgmt"> Include camera placement and management<span class="caption">In the Netherlands handled by Faunabeheer Midden-Nederland, in other countries this needs to be arranged separately</span></label>
+          </div>
+          <div class="input-row">
+            <label>Training sessions<span class="caption">Onboarding sessions to walk through the platform, settings, and workflows</span></label>
+            <input type="number" id="trainingSessions" value="1" min="0" step="1">
+          </div>
+          <div class="input-row">
+            <label>Days of software development<span class="caption">Usually not needed, can be included for custom features or integrations</span></label>
+            <input type="number" id="devDays" value="0" min="0" step="1">
+          </div>
+          <span class="prices-link" id="openModal">Configure unit prices</span>
+        </div>
       </div>
-      <div class="modal-body">
-        <table class="cost-table">
-          <thead>
-            <tr><th>Item</th><th>Price</th><th>Type</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Camera</td><td><input type="number" class="modal-input" id="priceCamera" value="130" min="0" step="1"></td><td class="desc">per camera</td></tr>
-            <tr><td>Enclosure</td><td><input type="number" class="modal-input" id="priceEnclosure" value="25" min="0" step="1"></td><td class="desc">per enclosure</td></tr>
-            <tr><td>Configuration</td><td><input type="number" class="modal-input" id="priceConfig" value="25" min="0" step="1"></td><td class="desc">per camera</td></tr>
-            <tr><td>Logistics</td><td><input type="number" class="modal-input" id="priceLogistics" value="10" min="0" step="1"></td><td class="desc">per camera</td></tr>
-            <tr><td>SD-card (two sets)</td><td><input type="number" class="modal-input" id="priceSD" value="20" min="0" step="1"></td><td class="desc">per camera</td></tr>
-            <tr><td>Batteries (two sets)</td><td><input type="number" class="modal-input" id="priceBatteries" value="100" min="0" step="1"></td><td class="desc">per camera</td></tr>
-            <tr><td>Mobile data (SIM)*</td><td><input type="number" class="modal-input" id="priceSIM" value="5" min="0" step="0.5"></td><td class="desc">per camera / month</td></tr>
-            <tr><td>Camera management**</td><td><input type="number" class="modal-input" id="camMgmtCost" value="300" min="0" step="10"></td><td class="desc">per camera / year</td></tr>
-            <tr><td>Battery charger</td><td><input type="number" class="modal-input" id="priceCharger" value="50" min="0" step="1"></td><td class="desc">per project</td></tr>
-            <tr><td>Software setup</td><td><input type="number" class="modal-input" id="priceSWSetup" value="1000" min="0" step="50"></td><td class="desc">per project</td></tr>
-            <tr><td>Software maintenance</td><td><input type="number" class="modal-input" id="priceSWMaint" value="250" min="0" step="10"></td><td class="desc">per project / month</td></tr>
-            <tr><td>Software development</td><td><input type="number" class="modal-input" id="priceSWDev" value="1000" min="0" step="50"></td><td class="desc">per day</td></tr>
-            <tr><td>Server setup</td><td><input type="number" class="modal-input" id="priceSrvSetup" value="1000" min="0" step="50"></td><td class="desc">per project</td></tr>
-            <tr><td>Server maintenance</td><td><input type="number" class="modal-input" id="priceSrvMaint" value="250" min="0" step="10"></td><td class="desc">per project / month</td></tr>
-            <tr><td>Server instance</td><td><input type="number" class="modal-input" id="priceSrvInstance" value="100" min="0" step="10"></td><td class="desc">per project / month</td></tr>
-            <tr><td>Training session</td><td><input type="number" class="modal-input" id="priceTraining" value="1000" min="0" step="50"></td><td class="desc">per session</td></tr>
-          </tbody>
-        </table>
-        <p style="font-size:.7rem; color:#9ca3af; padding:.5rem .5rem 0; font-style:italic;">* Based on Dutch SIM cards, costs may vary by country.</p>
-        <p style="font-size:.7rem; color:#9ca3af; padding:.25rem .5rem .25rem; font-style:italic;">** Faunabeheer Midden-Nederland charges around 300 per camera per year. Only applies when enabled in project parameters.</p>
+
+      <div class="card">
+        <div class="card-header dark">Cost breakdown</div>
+        <div class="card-body" style="padding:0">
+          <table class="output-table">
+            <thead>
+              <tr><th>Description</th><th>Basis</th><th>Unit price</th><th style="text-align:right">Quantity</th><th>Total</th></tr>
+            </thead>
+            <tbody id="outputBody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
+
+    <!-- Unit prices modal -->
+    <div class="modal-overlay" id="pricesModal">
+      <div class="modal">
+        <div class="modal-header">
+          Unit prices
+          <button class="modal-close" id="closeModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <table class="cost-table">
+            <thead>
+              <tr><th>Item</th><th>Price</th><th>Type</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Camera</td><td><input type="number" class="modal-input" id="priceCamera" value="130" min="0" step="1"></td><td class="desc">per camera</td></tr>
+              <tr><td>Enclosure</td><td><input type="number" class="modal-input" id="priceEnclosure" value="25" min="0" step="1"></td><td class="desc">per enclosure</td></tr>
+              <tr><td>Configuration</td><td><input type="number" class="modal-input" id="priceConfig" value="25" min="0" step="1"></td><td class="desc">per camera</td></tr>
+              <tr><td>Logistics</td><td><input type="number" class="modal-input" id="priceLogistics" value="10" min="0" step="1"></td><td class="desc">per camera</td></tr>
+              <tr><td>SD-card (two sets)</td><td><input type="number" class="modal-input" id="priceSD" value="20" min="0" step="1"></td><td class="desc">per camera</td></tr>
+              <tr><td>Batteries (two sets)</td><td><input type="number" class="modal-input" id="priceBatteries" value="100" min="0" step="1"></td><td class="desc">per camera</td></tr>
+              <tr><td>Mobile data (SIM)*</td><td><input type="number" class="modal-input" id="priceSIM" value="5" min="0" step="0.5"></td><td class="desc">per camera / month</td></tr>
+              <tr><td>Camera management**</td><td><input type="number" class="modal-input" id="camMgmtCost" value="300" min="0" step="10"></td><td class="desc">per camera / year</td></tr>
+              <tr><td>Battery charger</td><td><input type="number" class="modal-input" id="priceCharger" value="50" min="0" step="1"></td><td class="desc">per project</td></tr>
+              <tr><td>Software setup</td><td><input type="number" class="modal-input" id="priceSWSetup" value="1000" min="0" step="50"></td><td class="desc">per project</td></tr>
+              <tr><td>Software maintenance</td><td><input type="number" class="modal-input" id="priceSWMaint" value="250" min="0" step="10"></td><td class="desc">per project / month</td></tr>
+              <tr><td>Software development</td><td><input type="number" class="modal-input" id="priceSWDev" value="1000" min="0" step="50"></td><td class="desc">per day</td></tr>
+              <tr><td>Server setup</td><td><input type="number" class="modal-input" id="priceSrvSetup" value="1000" min="0" step="50"></td><td class="desc">per project</td></tr>
+              <tr><td>Server maintenance</td><td><input type="number" class="modal-input" id="priceSrvMaint" value="250" min="0" step="10"></td><td class="desc">per project / month</td></tr>
+              <tr><td>Server instance</td><td><input type="number" class="modal-input" id="priceSrvInstance" value="100" min="0" step="10"></td><td class="desc">per project / month</td></tr>
+              <tr><td>Training session</td><td><input type="number" class="modal-input" id="priceTraining" value="1000" min="0" step="50"></td><td class="desc">per session</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:.7rem; color:#9ca3af; padding:.5rem .5rem 0; font-style:italic;">* Based on Dutch SIM cards, costs may vary by country.</p>
+          <p style="font-size:.7rem; color:#9ca3af; padding:.25rem .5rem .25rem; font-style:italic;">** Faunabeheer Midden-Nederland charges around 300 per camera per year. Only applies when enabled in project parameters.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scaling insight -->
+    <details class="collapsible" id="scalingDetails">
+      <summary class="collapsible-toggle">How does cost per camera per year change with scale?</summary>
+      <div class="collapsible-body">
+        <table class="output-table scaling-table">
+          <tbody id="scalingBody"></tbody>
+        </table>
+        <div id="scalingChart" style="margin-top:1rem;"></div>
+      </div>
+    </details>
+
+    <!-- Charts -->
+    <div class="grid">
+      <div class="card">
+        <div class="card-header dark">Cost by category</div>
+        <div class="chart-container">
+          <svg id="catDonut" class="chart-svg" width="220" height="220" viewBox="0 0 220 220"></svg>
+          <div id="catLegend" class="legend"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header dark">Cost by item</div>
+        <div class="chart-container">
+          <svg id="donut" class="chart-svg" width="220" height="220" viewBox="0 0 220 220"></svg>
+          <div id="legend" class="legend"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- Scaling insight -->
-  <details class="collapsible" id="scalingDetails">
-    <summary class="collapsible-toggle">How does cost per camera per year change with scale?</summary>
-    <div class="collapsible-body">
-      <table class="output-table scaling-table">
-        <tbody id="scalingBody"></tbody>
-      </table>
-      <div id="scalingChart" style="margin-top:1rem;"></div>
-    </div>
-  </details>
-
-  <!-- Charts -->
-  <div class="grid">
+  <!-- ============ PLACEMENT TAB ============ -->
+  <div class="tab-pane" id="tab-placement">
     <div class="card">
-      <div class="card-header dark">Cost by category</div>
-      <div class="chart-container">
-        <svg id="catDonut" class="chart-svg" width="220" height="220" viewBox="0 0 220 220"></svg>
-        <div id="catLegend" class="legend"></div>
+      <div class="card-header green">Camera placement tool</div>
+      <div class="placement-toolbar">
+        <div class="input-row">
+          <label>Cameras</label>
+          <input type="number" id="placementCameras" value="50" min="1" step="1">
+        </div>
+        <button class="btn-regenerate" id="btnRegenerate" disabled>Regenerate</button>
       </div>
-    </div>
-    <div class="card">
-      <div class="card-header dark">Cost by item</div>
-      <div class="chart-container">
-        <svg id="donut" class="chart-svg" width="220" height="220" viewBox="0 0 220 220"></svg>
-        <div id="legend" class="legend"></div>
+      <div class="map-wrap">
+        <div id="map"></div>
+        <div class="map-empty-state" id="mapEmptyState">
+          <p>Draw a polygon on the map to define your study area.</p>
+        </div>
+        <div class="metrics-panel" id="metricsPanel">
+          <h3>Study design metrics</h3>
+          <div class="metric-line"><span class="metric-label">Study area</span><span class="metric-value" id="metricArea">-</span></div>
+          <div class="metric-line"><span class="metric-label">Cameras placed</span><span class="metric-value" id="metricCameras">-</span></div>
+          <div class="metric-line"><span class="metric-label">Camera density</span><span class="metric-value" id="metricDensity">-</span></div>
+          <div class="metric-line"><span class="metric-label">Mean spacing</span><span class="metric-value" id="metricSpacing">-</span></div>
+          <div class="metric-line"><span class="metric-label">Grid cell size</span><span class="metric-value" id="metricCellSize">-</span></div>
+          <div class="metric-line"><span class="metric-label">Detection area</span><span class="metric-value" id="metricDetection">-</span></div>
+          <div class="metric-line"><span class="metric-label">Coverage</span><span class="metric-value" id="metricCoverage">-</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -643,295 +187,12 @@
   <a href="https://github.com/PetervanLunteren/AddaxAI-Connect" target="_blank">AddaxAI-Connect</a> &mdash; Automated wildlife monitoring
 </footer>
 
-<script>
-(function () {
-  const $ = id => document.getElementById(id);
-  const val = id => parseFloat($(id).value) || 0;
-  const eur = n => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-  // Read unit prices from modal inputs
-  function prices() {
-    return {
-      camera: val('priceCamera'), enclosure: val('priceEnclosure'),
-      config: val('priceConfig'), logistics: val('priceLogistics'),
-      sd: val('priceSD'), batteries: val('priceBatteries'),
-      sim: val('priceSIM'), charger: val('priceCharger'),
-      swSetup: val('priceSWSetup'), swMaint: val('priceSWMaint'),
-      swDev: val('priceSWDev'), srvSetup: val('priceSrvSetup'),
-      srvMaint: val('priceSrvMaint'), srvInstance: val('priceSrvInstance'),
-      training: val('priceTraining')
-    };
-  }
-
-  const COLORS = [
-    '#0b5f65','#0e7a82','#12949d','#2db3bc','#6dcdd4',
-    '#d4a030','#e8be5a','#f0d68a','#063e42','#094f54',
-    '#3ec0c8','#a8e1e5','#92702a','#b8963c','#c9ae60',
-    '#48c5cd','#78d4da'
-  ];
-
-  // Compute total for given params (used for scaling table)
-  function computeTotal(P, cams, yrs, byo, backup, encl, sessions, devDays, inclMgmt, mgmtCost) {
-    const months = yrs * 12;
-    const ca = byo ? 0 : cams;
-    const cb = byo ? 0 : backup;
-    const ce = byo ? 0 : encl;
-    const items = [
-      P.camera * ca, P.camera * cb, P.enclosure * ce,
-      P.charger * (byo ? 0 : 1), P.sd * ca, P.batteries * ca,
-      P.logistics * (ca + cb), P.config * cams, P.srvSetup,
-      P.swSetup, P.swDev * devDays, P.training * sessions,
-      P.sim * months * cams, (inclMgmt ? mgmtCost : 0) * yrs * cams,
-      P.srvInstance * months, P.srvMaint * months, P.swMaint * months
-    ];
-    return items.reduce((s, v) => s + v, 0);
-  }
-
-  function calculate() {
-    const P         = prices();
-    const byo       = $('byo').checked;
-    const inclMgmt  = $('camMgmt').checked;
-    const years     = val('years');
-    const active    = val('activeCameras');
-    const backup    = val('backupCameras');
-    const enclCount = val('enclosures');
-    const sessions  = val('trainingSessions');
-    const devDays   = val('devDays');
-    const mgmtCost  = val('camMgmtCost');
-    const months    = years * 12;
-
-    // Disable camera inputs when BYO is checked
-    document.querySelectorAll('.camera-row').forEach(row => {
-      row.classList.toggle('disabled', byo);
-    });
-
-    const camQtyActive = byo ? 0 : active;
-    const camQtyBackup = byo ? 0 : backup;
-    const camQtyEncl   = byo ? 0 : enclCount;
-
-    const rows = [
-      { name: 'Active cameras',                unit: P.camera,              basis: 'Per item',          qty: camQtyActive,                cat: 'Hardware' },
-      { name: 'Backup cameras',                unit: P.camera,              basis: 'Per item',          qty: camQtyBackup,                cat: 'Hardware' },
-      { name: 'Enclosures',                    unit: P.enclosure,           basis: 'Per item',          qty: camQtyEncl,                  cat: 'Hardware' },
-      { name: 'Battery charger',               unit: P.charger,             basis: 'Per project',       qty: byo ? 0 : 1,                cat: 'Hardware' },
-      { name: 'SD-cards (two sets)',            unit: P.sd,                  basis: 'Per active camera', qty: camQtyActive,                cat: 'Hardware' },
-      { name: 'Batteries (two sets)',           unit: P.batteries,           basis: 'Per active camera', qty: camQtyActive,                cat: 'Hardware' },
-      { name: 'Logistics',                     unit: P.logistics,           basis: 'Per item',          qty: camQtyActive + camQtyBackup, cat: 'Hardware' },
-      { name: 'Camera configuration',          unit: P.config,              basis: 'Per active camera', qty: active,                      cat: 'Setup' },
-      { name: 'Server setup',                  unit: P.srvSetup,            basis: 'Per project',       qty: 1,                           cat: 'Setup' },
-      { name: 'Software setup',                unit: P.swSetup,             basis: 'Per project',       qty: 1,                           cat: 'Setup' },
-      { name: 'Software development',          unit: P.swDev,               basis: 'Per day',           qty: devDays,                     cat: 'Setup' },
-      { name: 'Training',                      unit: P.training,            basis: 'Per session',       qty: sessions,                    cat: 'Setup' },
-      { name: 'Mobile data (SIM-card)',         unit: P.sim * months,        basis: 'Per camera / ' + years + 'yr', qty: active,             cat: 'Usage' },
-      { name: 'Camera placement & management', unit: (inclMgmt ? mgmtCost : 0) * years, basis: 'Per camera / ' + years + 'yr', qty: active, cat: 'Usage' },
-      { name: 'Server instance',               unit: P.srvInstance * months, basis: 'Per project / ' + years + 'yr', qty: 1,              cat: 'Usage' },
-      { name: 'Server maintenance',            unit: P.srvMaint * months,   basis: 'Per project / ' + years + 'yr', qty: 1,               cat: 'Usage' },
-      { name: 'Software maintenance',          unit: P.swMaint * months,    basis: 'Per project / ' + years + 'yr', qty: 1,               cat: 'Usage' },
-    ];
-
-    rows.forEach(r => r.total = r.unit * r.qty);
-    const grandTotal = rows.reduce((s, r) => s + r.total, 0);
-
-    // Render output table with section headers
-    const tbody = $('outputBody');
-    let lastCat = '';
-    let tableHTML = '';
-    rows.forEach(r => {
-      if (r.cat !== lastCat) {
-        lastCat = r.cat;
-        tableHTML += `<tr class="section-row"><td colspan="5">${r.cat}</td></tr>`;
-      }
-      tableHTML += `<tr>
-        <td>${r.name}</td>
-        <td>${r.basis}</td>
-        <td><div class="currency"><span>&euro;</span><span>${eur(r.unit)}</span></div></td>
-        <td class="qty">${r.qty}</td>
-        <td><div class="currency"><span>&euro;</span><span>${eur(r.total)}</span></div></td>
-      </tr>`;
-    });
-    const avgPerCamYear = (active > 0 && years > 0) ? eur(grandTotal / active / years) : '-';
-    tableHTML += `<tr class="total-row">
-        <td colspan="4">Total</td>
-        <td><div class="currency"><span>&euro;</span><span>${eur(grandTotal)}</span></div></td>
-      </tr>
-      <tr class="metric-row">
-        <td colspan="4">Average cost per camera per year</td>
-        <td><div class="currency"><span>&euro;</span><span>${avgPerCamYear}</span></div></td>
-      </tr>`;
-    tbody.innerHTML = tableHTML;
-
-    // Category totals for coarse chart
-    const catTotals = {};
-    rows.forEach(r => { catTotals[r.cat] = (catTotals[r.cat] || 0) + r.total; });
-
-    // Donut chart renderer
-    function renderDonut(svgEl, legendEl, data, total) {
-      if (total === 0) {
-        svgEl.innerHTML = '<text x="110" y="115" text-anchor="middle" fill="#9ca3af" font-size="14">No costs</text>';
-        legendEl.innerHTML = '';
-        return;
-      }
-      const cx = 110, cy = 110, R = 95, r = 55;
-      let angle = -Math.PI / 2;
-      let paths = '';
-      data.forEach(d => {
-        const frac = d.value / total;
-        const a1 = angle;
-        const a2 = angle + frac * 2 * Math.PI;
-        const large = frac > 0.5 ? 1 : 0;
-        const x1o = cx + R * Math.cos(a1), y1o = cy + R * Math.sin(a1);
-        const x2o = cx + R * Math.cos(a2), y2o = cy + R * Math.sin(a2);
-        const x1i = cx + r * Math.cos(a2), y1i = cy + r * Math.sin(a2);
-        const x2i = cx + r * Math.cos(a1), y2i = cy + r * Math.sin(a1);
-        paths += `<path d="M${x1o},${y1o} A${R},${R} 0 ${large} 1 ${x2o},${y2o} L${x1i},${y1i} A${r},${r} 0 ${large} 0 ${x2i},${y2i} Z" fill="${d.color}"/>`;
-        angle = a2;
-      });
-      paths += `<text x="${cx}" y="${cy - 6}" text-anchor="middle" fill="#1f2937" font-size="12" font-weight="600">&euro; ${eur(total)}</text>`;
-      paths += `<text x="${cx}" y="${cy + 12}" text-anchor="middle" fill="#6b7280" font-size="10">total</text>`;
-      svgEl.innerHTML = paths;
-      legendEl.innerHTML = data.map(d =>
-        `<div class="legend-item">
-          <span class="legend-swatch" style="background:${d.color}"></span>
-          <span>${d.name}</span>
-          <span class="legend-value">&euro; ${eur(d.value)}</span>
-        </div>`
-      ).join('');
-    }
-
-    // Detailed donut — group small slices into "Other"
-    const nonZero = rows.filter(r => r.total > 0);
-    const threshold = grandTotal * 0.03;
-    let chartData = [];
-    let otherTotal = 0;
-    nonZero.forEach((r, i) => {
-      if (r.total < threshold) {
-        otherTotal += r.total;
-      } else {
-        chartData.push({ name: r.name, value: r.total, color: COLORS[i % COLORS.length] });
-      }
-    });
-    if (otherTotal > 0) {
-      chartData.push({ name: 'Other', value: otherTotal, color: '#9ca3af' });
-    }
-    renderDonut($('donut'), $('legend'), chartData, grandTotal);
-
-    // Category donut
-    const CAT_COLORS = { Hardware: '#0b5f65', Setup: '#d4a030', Usage: '#0e7a82' };
-    const catData = Object.entries(catTotals)
-      .filter(([, v]) => v > 0)
-      .map(([name, value]) => ({ name, value, color: CAT_COLORS[name] || '#9ca3af' }));
-    renderDonut($('catDonut'), $('catLegend'), catData, grandTotal);
-
-    // Scaling insight table
-    const camSteps = [10, 25, 50, 75, 100, 150, 200];
-    const yearSteps = [1, 2];
-    const backupRatio = active > 0 ? backup / active : 0.1;
-
-    // Build table: rows = years, cols = cameras
-    const scalingBody = $('scalingBody');
-    let sHTML = '<tr><th class="row-header">Cameras \u2192<br>Years \u2193</th>';
-    camSteps.forEach(c => {
-      sHTML += `<th${c === active ? ' class="current-cell"' : ''}>${c}</th>`;
-    });
-    sHTML += '</tr>';
-
-    yearSteps.forEach(y => {
-      sHTML += `<tr><td class="row-header">${y} yr${y > 1 ? 's' : ''}</td>`;
-      camSteps.forEach(c => {
-        const bk = Math.round(c * backupRatio);
-        const t = computeTotal(P, c, y, byo, bk, enclCount, sessions, 0, inclMgmt, mgmtCost);
-        const avg = t / c / y;
-        const isCurrent = c === active && y === years;
-        sHTML += `<td class="${isCurrent ? 'current-cell' : ''}">\u20AC ${Math.round(avg)}</td>`;
-      });
-      sHTML += '</tr>';
-    });
-    scalingBody.innerHTML = sHTML;
-
-    // Scaling line chart
-    const chartW = 600, chartH = 280, pad = { top: 20, right: 20, bottom: 40, left: 60 };
-    const plotW = chartW - pad.left - pad.right;
-    const plotH = chartH - pad.top - pad.bottom;
-
-    // Compute data series
-    const seriesData = yearSteps.map(y => ({
-      year: y,
-      points: camSteps.map(c => {
-        const bk = Math.round(c * backupRatio);
-        const t = computeTotal(P, c, y, byo, bk, enclCount, sessions, 0, inclMgmt, mgmtCost);
-        return { cam: c, avg: Math.round(t / c / y) };
-      })
-    }));
-
-    const allAvgs = seriesData.flatMap(s => s.points.map(p => p.avg));
-    const maxAvg = Math.max(...allAvgs);
-    const minAvg = Math.min(...allAvgs);
-    const yMax = Math.ceil(maxAvg / 100) * 100;
-    const yMin = Math.max(0, Math.floor(minAvg / 100) * 100 - 100);
-
-    const xScale = c => pad.left + ((c - camSteps[0]) / (camSteps[camSteps.length - 1] - camSteps[0])) * plotW;
-    const yScale = v => pad.top + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
-
-    const lineColors = ['var(--teal-700)', 'var(--teal-400)'];
-    let svg = `<svg viewBox="0 0 ${chartW} ${chartH}" style="width:100%;height:auto;font-family:inherit;">`;
-
-    // Y gridlines and labels
-    const yTicks = 5;
-    for (let i = 0; i <= yTicks; i++) {
-      const v = yMin + (yMax - yMin) * i / yTicks;
-      const y = yScale(v);
-      svg += `<line x1="${pad.left}" y1="${y}" x2="${chartW - pad.right}" y2="${y}" stroke="#e5e7eb" stroke-width="1"/>`;
-      svg += `<text x="${pad.left - 8}" y="${y + 4}" text-anchor="end" fill="#6b7280" font-size="11">\u20AC ${Math.round(v)}</text>`;
-    }
-
-    // X labels
-    camSteps.forEach(c => {
-      svg += `<text x="${xScale(c)}" y="${chartH - 8}" text-anchor="middle" fill="#6b7280" font-size="11">${c}</text>`;
-    });
-    svg += `<text x="${pad.left + plotW / 2}" y="${chartH}" text-anchor="middle" fill="#9ca3af" font-size="10">cameras</text>`;
-
-    // Lines and dots
-    seriesData.forEach((s, si) => {
-      const color = lineColors[si];
-      const pathD = s.points.map((p, i) => `${i === 0 ? 'M' : 'L'}${xScale(p.cam)},${yScale(p.avg)}`).join(' ');
-      svg += `<path d="${pathD}" fill="none" stroke="${color}" stroke-width="2.5"/>`;
-      s.points.forEach(p => {
-        const isCurrent = p.cam === active && s.year === years;
-        svg += `<circle cx="${xScale(p.cam)}" cy="${yScale(p.avg)}" r="${isCurrent ? 5 : 3}" fill="${isCurrent ? color : 'white'}" stroke="${color}" stroke-width="2"/>`;
-      });
-    });
-
-    // Legend
-    const legX = pad.left + 8;
-    seriesData.forEach((s, si) => {
-      const legY = pad.top + 8 + si * 18;
-      svg += `<line x1="${legX}" y1="${legY}" x2="${legX + 20}" y2="${legY}" stroke="${lineColors[si]}" stroke-width="2.5"/>`;
-      svg += `<text x="${legX + 26}" y="${legY + 4}" fill="#374151" font-size="11">${s.year} yr${s.year > 1 ? 's' : ''}</text>`;
-    });
-
-    svg += '</svg>';
-    $('scalingChart').innerHTML = svg;
-
-  }
-
-  // Attach listeners to all inputs
-  document.querySelectorAll('input[type="number"]').forEach(input => {
-    input.addEventListener('input', calculate);
-  });
-  $('years').addEventListener('change', calculate);
-  $('byo').addEventListener('change', calculate);
-  $('camMgmt').addEventListener('change', calculate);
-
-  // Modal
-  const modal = $('pricesModal');
-  $('openModal').addEventListener('click', () => modal.classList.add('open'));
-  $('closeModal').addEventListener('click', () => modal.classList.remove('open'));
-  modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
-
-  // Initial calculation
-  calculate();
-})();
-</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<script src="https://unpkg.com/@turf/turf@7/turf.min.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/cost.js"></script>
+<script src="js/placement.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,124 @@
+/* Map container */
+.map-wrap {
+  position: relative;
+  height: 550px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--gray-200);
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Metrics overlay */
+.metrics-panel {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  z-index: 1000;
+  padding: .75rem 1rem;
+  min-width: 240px;
+  font-size: .8rem;
+  display: none;
+}
+
+.metrics-panel.visible {
+  display: block;
+}
+
+.metrics-panel h3 {
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--teal-700);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  margin-bottom: .5rem;
+}
+
+.metric-line {
+  display: flex;
+  justify-content: space-between;
+  padding: .2rem 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.metric-line:last-child {
+  border-bottom: none;
+}
+
+.metric-label {
+  color: var(--gray-600);
+}
+
+.metric-value {
+  font-weight: 600;
+  color: var(--gray-800);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Empty state */
+.map-empty-state {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 1.5rem 2rem;
+  text-align: center;
+  pointer-events: none;
+  max-width: 340px;
+}
+
+.map-empty-state p {
+  color: var(--gray-600);
+  font-size: .9rem;
+  line-height: 1.6;
+}
+
+.map-empty-state.hidden {
+  display: none;
+}
+
+/* Placement toolbar */
+.placement-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  flex-wrap: wrap;
+}
+
+.placement-toolbar .input-row {
+  border-bottom: none;
+  padding: 0;
+  flex: 0 0 auto;
+}
+
+.btn-regenerate {
+  padding: .4rem 1rem;
+  font-size: .8rem;
+  font-weight: 600;
+  color: white;
+  background: var(--teal-700);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.btn-regenerate:hover {
+  background: var(--teal-600);
+}
+
+.btn-regenerate:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
