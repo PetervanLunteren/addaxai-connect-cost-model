@@ -13,7 +13,7 @@
   var cameras = [];
 
   function initMap() {
-    map = L.map('map').setView([52.1, 5.3], 7);
+    map = L.map('map').setView([20, 0], 2);
     window.placementMap = map;
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
