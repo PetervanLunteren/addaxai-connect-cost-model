@@ -16,7 +16,8 @@ function prices() {
     swSetup: val('priceSWSetup'), swMaint: val('priceSWMaint'),
     swDev: val('priceSWDev'), srvSetup: val('priceSrvSetup'),
     srvMaint: val('priceSrvMaint'), srvInstance: val('priceSrvInstance'),
-    training: val('priceTraining')
+    training: val('priceTraining'),
+    localSupport: val('priceLocalSupport')
   };
 }
 
@@ -79,6 +80,7 @@ function calculate() {
   var enclCount = val('enclosures');
   var sessions  = val('trainingSessions');
   var devDays   = val('devDays');
+  var localSupport = val('localSupportSessions');
   var mgmtCost  = val('camMgmtCost');
   var months    = years * 12;
 
@@ -106,6 +108,7 @@ function calculate() {
     { name: 'Training',                      unit: P.training,            basis: 'Per session',       qty: sessions,                    cat: 'Setup' },
     { name: 'Mobile data (SIM-card)',         unit: P.sim * months,        basis: 'Per camera / ' + years + 'yr', qty: active,             cat: 'Usage' },
     { name: 'Camera placement & management', unit: (inclMgmt ? mgmtCost : 0) * years, basis: 'Per camera / ' + years + 'yr', qty: active, cat: 'Usage' },
+    { name: 'Local support',                unit: P.localSupport,            basis: 'Per session',       qty: localSupport,                cat: 'Usage' },
     { name: 'Server instance',               unit: P.srvInstance * months, basis: 'Per project / ' + years + 'yr', qty: 1,              cat: 'Usage' },
     { name: 'Server maintenance',            unit: P.srvMaint * months,   basis: 'Per project / ' + years + 'yr', qty: 1,               cat: 'Usage' },
     { name: 'Software maintenance',          unit: P.swMaint * months,    basis: 'Per project / ' + years + 'yr', qty: 1,               cat: 'Usage' },

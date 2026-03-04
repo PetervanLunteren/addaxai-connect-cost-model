@@ -67,6 +67,10 @@
             <input type="number" id="trainingSessions" value="1" min="0" step="1">
           </div>
           <div class="input-row">
+            <label>Local support sessions<span class="caption">On-site support by a local partner to help set up cameras, answer questions, and provide guidance in the local language</span></label>
+            <input type="number" id="localSupportSessions" value="0" min="0" step="1">
+          </div>
+          <div class="input-row">
             <label>Days of software development<span class="caption">Usually not needed, can be included for custom features or integrations</span></label>
             <input type="number" id="devDays" value="0" min="0" step="1">
           </div>
@@ -116,6 +120,7 @@
               <tr><td>Server maintenance</td><td><input type="number" class="modal-input" id="priceSrvMaint" value="250" min="0" step="10"></td><td class="desc">per project / month</td></tr>
               <tr><td>Server instance</td><td><input type="number" class="modal-input" id="priceSrvInstance" value="100" min="0" step="10"></td><td class="desc">per project / month</td></tr>
               <tr><td>Training session</td><td><input type="number" class="modal-input" id="priceTraining" value="1000" min="0" step="50"></td><td class="desc">per session</td></tr>
+              <tr><td>Local support session</td><td><input type="number" class="modal-input" id="priceLocalSupport" value="1000" min="0" step="50"></td><td class="desc">per session</td></tr>
             </tbody>
           </table>
           <p style="font-size:.7rem; color:#9ca3af; padding:.5rem .5rem 0; font-style:italic;">* Based on Dutch SIM cards, costs may vary by country.</p>
