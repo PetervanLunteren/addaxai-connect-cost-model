@@ -260,6 +260,7 @@ header a { color: var(--teal-700); }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
   padding: .5rem 0;
   border-bottom: 1px solid var(--gray-100);
 }
@@ -290,6 +291,10 @@ header a { color: var(--teal-700); }
   align-items: flex-start;
   gap: .5rem;
   cursor: pointer;
+}
+
+.checkbox-label > span {
+  flex: 1;
 }
 
 .checkbox-label input[type="checkbox"] {
