@@ -115,12 +115,12 @@ function calculate() {
     { name: 'SD-cards (two sets)',            unit: P.sd,                  basis: 'Per active camera', qty: camQtyActive,                cat: 'Hardware' },
     { name: 'Batteries (two sets)',           unit: P.batteries,           basis: 'Per active camera', qty: camQtyActive,                cat: 'Hardware' },
     { name: 'Logistics',                     unit: P.logistics,           basis: 'Per item',          qty: camQtyActive + camQtyBackup, cat: 'Hardware' },
-    { name: 'Camera configuration',          unit: P.config,              basis: 'Per active camera', qty: diy ? 0 : active,            cat: 'Services' },
-    { name: 'Server setup',                  unit: P.srvSetup,            basis: 'Per project',       qty: diy ? 0 : 1,                 cat: 'Services' },
-    { name: 'Software setup',                unit: P.swSetup,             basis: 'Per project',       qty: diy ? 0 : 1,                 cat: 'Services' },
-    { name: 'Software development',          unit: P.swDev,               basis: 'Per day',           qty: diy ? 0 : devDays,           cat: 'Services' },
-    { name: 'Training',                      unit: P.training,            basis: 'Per session',       qty: diy ? 0 : sessions,          cat: 'Services' },
-    { name: 'Local support',                 unit: P.localSupport,        basis: 'Per session',       qty: diy ? 0 : localSupport,      cat: 'Services' },
+    { name: 'Camera configuration',          unit: P.config,              basis: 'Per active camera', qty: diy ? 0 : active,            cat: 'Setup' },
+    { name: 'Server setup',                  unit: P.srvSetup,            basis: 'Per project',       qty: diy ? 0 : 1,                 cat: 'Setup' },
+    { name: 'Software setup',                unit: P.swSetup,             basis: 'Per project',       qty: diy ? 0 : 1,                 cat: 'Setup' },
+    { name: 'Software development',          unit: P.swDev,               basis: 'Per day',           qty: diy ? 0 : devDays,           cat: 'Setup' },
+    { name: 'Training',                      unit: P.training,            basis: 'Per session',       qty: diy ? 0 : sessions,          cat: 'Setup' },
+    { name: 'Local support',                 unit: P.localSupport,        basis: 'Per session',       qty: diy ? 0 : localSupport,      cat: 'Setup' },
     { name: 'Mobile data (SIM-card)',         unit: P.sim * months,        basis: 'Per camera / ' + years + 'yr', qty: active,           cat: 'Usage' },
     { name: 'Camera placement & management', unit: (inclMgmt ? mgmtCost : 0) * years, basis: 'Per camera / ' + years + 'yr', qty: active, cat: 'Usage' },
     { name: 'Server instance',               unit: P.srvInstance * months, basis: 'Per project / ' + years + 'yr', qty: diy ? 0 : 1,      cat: 'Usage' },
@@ -181,7 +181,7 @@ function calculate() {
   renderDonut($('donut'), $('legend'), chartData, grandTotal);
 
   // Category donut
-  var CAT_COLORS = { Hardware: '#0b5f65', Services: '#d4a030', Usage: '#0e7a82' };
+  var CAT_COLORS = { Hardware: '#0b5f65', Setup: '#d4a030', Usage: '#0e7a82' };
   var catData = Object.entries(catTotals)
     .filter(function (e) { return e[1] > 0; })
     .map(function (e) { return { name: e[0], value: e[1], color: CAT_COLORS[e[0]] || '#9ca3af' }; });

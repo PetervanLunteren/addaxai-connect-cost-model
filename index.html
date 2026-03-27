@@ -43,40 +43,40 @@
         <div class="card-header green">Project parameters</div>
         <div class="card-body">
           <div class="input-row">
-            <label>Number of years <span class="info-tip"><span class="info-icon" tabindex="0">i</span><span class="info-text">Project duration, affects mobile data, software maintenance, server maintenance, and server instance costs</span></span></label>
+            <label>Number of years<span class="caption">Project duration, affects mobile data, software maintenance, server maintenance, and server instance costs</span></label>
             <select id="years"><option value="1">1 year</option><option value="2">2 years</option></select>
           </div>
           <div class="input-row checkbox-row">
-            <label class="checkbox-label"><input type="checkbox" id="byo"> I'll bring my own cameras <span class="info-tip"><span class="info-icon" tabindex="0">i</span><span class="info-text">Skips camera hardware costs, but usually requires a few days of software development to integrate with the platform. See <a href="#" id="openCameraSpecs">camera requirements</a></span></span></label>
+            <label class="checkbox-label"><input type="checkbox" id="byo"> I'll bring my own cameras<span class="caption">Skips camera hardware costs, but usually requires a few days of software development to integrate with the platform. See <a href="#" id="openCameraSpecs">camera requirements</a></span></label>
           </div>
           <div class="input-row camera-row">
-            <label>Active cameras <span class="info-tip"><span class="info-icon" tabindex="0">i</span><span class="info-text">Cameras with an active connection to the system (includes SIM, SD-cards, batteries, configuration). See <a href="https://wiki.smartparks.org/addaxaiconnect/cameras/willfinet40cg" target="_blank">camera details</a></span></span></label>
+            <label>Active cameras<span class="caption">Cameras with an active connection to the system (includes SIM, SD-cards, batteries, configuration). See <a href="https://wiki.smartparks.org/addaxaiconnect/cameras/willfinet40cg" target="_blank">camera details</a></span></label>
             <input type="number" id="activeCameras" value="50" min="0" step="1">
           </div>
           <div class="input-row camera-row">
-            <label>Backup cameras <span class="info-tip"><span class="info-icon" tabindex="0">i</span><span class="info-text">Spare cameras without an active connection, no SIM or configuration costs</span></span></label>
+            <label>Backup cameras<span class="caption">Spare cameras without an active connection, no SIM or configuration costs</span></label>
             <input type="number" id="backupCameras" value="5" min="0" step="1">
           </div>
           <div class="input-row camera-row">
-            <label>Enclosures <span class="info-tip"><span class="info-icon" tabindex="0">i</span><span class="info-text">Optional protective camera housings</span></span></label>
+            <label>Enclosures<span class="caption">Optional protective camera housings</span></label>
             <input type="number" id="enclosures" value="0" min="0" step="1">
           </div>
           <div class="input-row checkbox-row">
-            <label class="checkbox-label"><input type="checkbox" id="camMgmt"> Include camera placement and management <span class="info-tip"><span class="info-icon" tabindex="0">i</span><span class="info-text">In the Netherlands handled by Wildlife Insight, in other countries this needs to be arranged separately</span></span></label>
+            <label class="checkbox-label"><input type="checkbox" id="camMgmt"> Include camera placement and management<span class="caption">In the Netherlands handled by Wildlife Insight, in other countries this needs to be arranged separately</span></label>
           </div>
           <div class="input-row checkbox-row">
-            <label class="checkbox-label"><input type="checkbox" id="diy"> I'll handle setup and maintenance myself <span class="info-tip"><span class="info-icon" tabindex="0">i</span><span class="info-text">Removes all professional service and hosting costs. You set up the software, server, and cameras yourself using the open-source documentation</span></span></label>
+            <label class="checkbox-label"><input type="checkbox" id="diy"> I'll handle setup and maintenance myself<span class="caption">Removes all professional service and hosting costs. You set up the software, server, and cameras yourself using the open-source documentation</span></label>
           </div>
           <div class="input-row service-row">
-            <label>Training sessions <span class="info-tip"><span class="info-icon" tabindex="0">i</span><span class="info-text">Onboarding sessions to walk through the platform, settings, and workflows</span></span></label>
+            <label>Training sessions<span class="caption">Onboarding sessions to walk through the platform, settings, and workflows</span></label>
             <input type="number" id="trainingSessions" value="1" min="0" step="1">
           </div>
           <div class="input-row service-row">
-            <label>Local support sessions <span class="info-tip"><span class="info-icon" tabindex="0">i</span><span class="info-text">On-site support by a local partner to help set up cameras, answer questions, and provide guidance in the local language</span></span></label>
+            <label>Local support sessions<span class="caption">On-site support by a local partner to help set up cameras, answer questions, and provide guidance in the local language</span></label>
             <input type="number" id="localSupportSessions" value="0" min="0" step="1">
           </div>
           <div class="input-row service-row">
-            <label>Days of software development <span class="info-tip"><span class="info-icon" tabindex="0">i</span><span class="info-text">Usually not needed, can be included for custom features or integrations</span></span></label>
+            <label>Days of software development<span class="caption">Usually not needed, can be included for custom features or integrations</span></label>
             <input type="number" id="devDays" value="0" min="0" step="1">
           </div>
           <span class="prices-link" id="openModal">Configure unit prices</span>
