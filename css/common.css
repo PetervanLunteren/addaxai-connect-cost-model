@@ -266,6 +266,7 @@ header a { color: var(--teal-700); }
 }
 
 .input-row:last-child { border-bottom: none; }
+.input-row.checkbox-row { gap: 0; }
 
 .input-row label {
   font-size: .875rem;
