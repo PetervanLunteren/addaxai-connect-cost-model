@@ -35,6 +35,8 @@
   <!-- ============ COST TAB ============ -->
   <div class="tab-pane active" id="tab-cost">
 
+    <p class="info-note">AddaxAI-Connect is free and open source. The costs below cover hardware and optional professional support — you can set up and run everything yourself at no software cost.</p>
+
     <!-- Parameters + Cost breakdown side by side -->
     <div class="grid main-grid">
       <div class="card">
@@ -62,15 +64,21 @@
           <div class="input-row checkbox-row">
             <label class="checkbox-label"><input type="checkbox" id="camMgmt"> Include camera placement and management<span class="caption">In the Netherlands handled by Wildlife Insight, in other countries this needs to be arranged separately</span></label>
           </div>
-          <div class="input-row">
+          <div class="input-row checkbox-row">
+            <label class="checkbox-label"><input type="checkbox" id="diy"> I'll handle setup and maintenance myself<span class="caption">Removes all professional service costs — you set up the software, server, and cameras yourself using the open-source documentation</span></label>
+          </div>
+          <div class="input-row checkbox-row">
+            <label class="checkbox-label"><input type="checkbox" id="selfHost"> I'll host my own server<span class="caption">Removes server hosting costs — you provide your own server infrastructure</span></label>
+          </div>
+          <div class="input-row service-row">
             <label>Training sessions<span class="caption">Onboarding sessions to walk through the platform, settings, and workflows</span></label>
             <input type="number" id="trainingSessions" value="1" min="0" step="1">
           </div>
-          <div class="input-row">
+          <div class="input-row service-row">
             <label>Local support sessions<span class="caption">On-site support by a local partner to help set up cameras, answer questions, and provide guidance in the local language</span></label>
             <input type="number" id="localSupportSessions" value="0" min="0" step="1">
           </div>
-          <div class="input-row">
+          <div class="input-row service-row">
             <label>Days of software development<span class="caption">Usually not needed, can be included for custom features or integrations</span></label>
             <input type="number" id="devDays" value="0" min="0" step="1">
           </div>

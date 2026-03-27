@@ -21,7 +21,7 @@ function prices() {
   };
 }
 
-function computeTotal(P, cams, yrs, byo, backup, encl, sessions, devDays, inclMgmt, mgmtCost) {
+function computeTotal(P, cams, yrs, byo, backup, encl, sessions, localSessions, devDays, inclMgmt, mgmtCost, diy, selfHost) {
   var months = yrs * 12;
   var ca = byo ? 0 : cams;
   var cb = byo ? 0 : backup;
@@ -29,10 +29,18 @@ function computeTotal(P, cams, yrs, byo, backup, encl, sessions, devDays, inclMg
   var items = [
     P.camera * ca, P.camera * cb, P.enclosure * ce,
     P.charger * (byo ? 0 : 1), P.sd * ca, P.batteries * ca,
-    P.logistics * (ca + cb), P.config * cams, P.srvSetup,
-    P.swSetup, P.swDev * devDays, P.training * sessions,
-    P.sim * months * cams, (inclMgmt ? mgmtCost : 0) * yrs * cams,
-    P.srvInstance * months, P.srvMaint * months, P.swMaint * months
+    P.logistics * (ca + cb),
+    diy ? 0 : P.config * cams,
+    diy ? 0 : P.srvSetup,
+    diy ? 0 : P.swSetup,
+    diy ? 0 : P.swDev * devDays,
+    diy ? 0 : P.training * sessions,
+    diy ? 0 : P.localSupport * localSessions,
+    P.sim * months * cams,
+    (inclMgmt ? mgmtCost : 0) * yrs * cams,
+    selfHost ? 0 : P.srvInstance * months,
+    diy ? 0 : P.srvMaint * months,
+    diy ? 0 : P.swMaint * months
   ];
   return items.reduce(function (s, v) { return s + v; }, 0);
 }
@@ -82,11 +90,18 @@ function calculate() {
   var devDays   = val('devDays');
   var localSupport = val('localSupportSessions');
   var mgmtCost  = val('camMgmtCost');
+  var diy       = $('diy').checked;
+  var selfHost  = $('selfHost').checked;
   var months    = years * 12;
 
   // Disable camera inputs when BYO is checked
   document.querySelectorAll('.camera-row').forEach(function (row) {
     row.classList.toggle('disabled', byo);
+  });
+
+  // Disable service inputs when DIY is checked
+  document.querySelectorAll('.service-row').forEach(function (row) {
+    row.classList.toggle('disabled', diy);
   });
 
   var camQtyActive = byo ? 0 : active;
@@ -101,17 +116,17 @@ function calculate() {
     { name: 'SD-cards (two sets)',            unit: P.sd,                  basis: 'Per active camera', qty: camQtyActive,                cat: 'Hardware' },
     { name: 'Batteries (two sets)',           unit: P.batteries,           basis: 'Per active camera', qty: camQtyActive,                cat: 'Hardware' },
     { name: 'Logistics',                     unit: P.logistics,           basis: 'Per item',          qty: camQtyActive + camQtyBackup, cat: 'Hardware' },
-    { name: 'Camera configuration',          unit: P.config,              basis: 'Per active camera', qty: active,                      cat: 'Setup' },
-    { name: 'Server setup',                  unit: P.srvSetup,            basis: 'Per project',       qty: 1,                           cat: 'Setup' },
-    { name: 'Software setup',                unit: P.swSetup,             basis: 'Per project',       qty: 1,                           cat: 'Setup' },
-    { name: 'Software development',          unit: P.swDev,               basis: 'Per day',           qty: devDays,                     cat: 'Setup' },
-    { name: 'Training',                      unit: P.training,            basis: 'Per session',       qty: sessions,                    cat: 'Setup' },
-    { name: 'Local support',                unit: P.localSupport,            basis: 'Per session',       qty: localSupport,                cat: 'Setup' },
-    { name: 'Mobile data (SIM-card)',         unit: P.sim * months,        basis: 'Per camera / ' + years + 'yr', qty: active,             cat: 'Usage' },
+    { name: 'Camera configuration',          unit: P.config,              basis: 'Per active camera', qty: diy ? 0 : active,            cat: 'Services' },
+    { name: 'Server setup',                  unit: P.srvSetup,            basis: 'Per project',       qty: diy ? 0 : 1,                 cat: 'Services' },
+    { name: 'Software setup',                unit: P.swSetup,             basis: 'Per project',       qty: diy ? 0 : 1,                 cat: 'Services' },
+    { name: 'Software development',          unit: P.swDev,               basis: 'Per day',           qty: diy ? 0 : devDays,           cat: 'Services' },
+    { name: 'Training',                      unit: P.training,            basis: 'Per session',       qty: diy ? 0 : sessions,          cat: 'Services' },
+    { name: 'Local support',                 unit: P.localSupport,        basis: 'Per session',       qty: diy ? 0 : localSupport,      cat: 'Services' },
+    { name: 'Mobile data (SIM-card)',         unit: P.sim * months,        basis: 'Per camera / ' + years + 'yr', qty: active,           cat: 'Usage' },
     { name: 'Camera placement & management', unit: (inclMgmt ? mgmtCost : 0) * years, basis: 'Per camera / ' + years + 'yr', qty: active, cat: 'Usage' },
-    { name: 'Server instance',               unit: P.srvInstance * months, basis: 'Per project / ' + years + 'yr', qty: 1,              cat: 'Usage' },
-    { name: 'Server maintenance',            unit: P.srvMaint * months,   basis: 'Per project / ' + years + 'yr', qty: 1,               cat: 'Usage' },
-    { name: 'Software maintenance',          unit: P.swMaint * months,    basis: 'Per project / ' + years + 'yr', qty: 1,               cat: 'Usage' },
+    { name: 'Server instance',               unit: P.srvInstance * months, basis: 'Per project / ' + years + 'yr', qty: selfHost ? 0 : 1, cat: 'Usage' },
+    { name: 'Server maintenance',            unit: P.srvMaint * months,   basis: 'Per project / ' + years + 'yr', qty: diy ? 0 : 1,    cat: 'Usage' },
+    { name: 'Software maintenance',          unit: P.swMaint * months,    basis: 'Per project / ' + years + 'yr', qty: diy ? 0 : 1,    cat: 'Usage' },
   ];
 
   rows.forEach(function (r) { r.total = r.unit * r.qty; });
@@ -167,7 +182,7 @@ function calculate() {
   renderDonut($('donut'), $('legend'), chartData, grandTotal);
 
   // Category donut
-  var CAT_COLORS = { Hardware: '#0b5f65', Setup: '#d4a030', Usage: '#0e7a82' };
+  var CAT_COLORS = { Hardware: '#0b5f65', Services: '#d4a030', Usage: '#0e7a82' };
   var catData = Object.entries(catTotals)
     .filter(function (e) { return e[1] > 0; })
     .map(function (e) { return { name: e[0], value: e[1], color: CAT_COLORS[e[0]] || '#9ca3af' }; });
@@ -189,7 +204,7 @@ function calculate() {
     sHTML += '<tr><td class="row-header">' + y + ' yr' + (y > 1 ? 's' : '') + '</td>';
     camSteps.forEach(function (c) {
       var bk = Math.round(c * backupRatio);
-      var t = computeTotal(P, c, y, byo, bk, enclCount, sessions, 0, inclMgmt, mgmtCost);
+      var t = computeTotal(P, c, y, byo, bk, enclCount, sessions, localSupport, 0, inclMgmt, mgmtCost, diy, selfHost);
       var avg = t / c / y;
       var isCurrent = c === active && y === years;
       sHTML += '<td class="' + (isCurrent ? 'current-cell' : '') + '">\u20AC ' + Math.round(avg) + '</td>';
@@ -208,7 +223,7 @@ function calculate() {
       year: y,
       points: camSteps.map(function (c) {
         var bk = Math.round(c * backupRatio);
-        var t = computeTotal(P, c, y, byo, bk, enclCount, sessions, 0, inclMgmt, mgmtCost);
+        var t = computeTotal(P, c, y, byo, bk, enclCount, sessions, localSupport, 0, inclMgmt, mgmtCost, diy, selfHost);
         return { cam: c, avg: Math.round(t / c / y) };
       })
     };
@@ -268,6 +283,8 @@ document.addEventListener('DOMContentLoaded', function () {
   $('years').addEventListener('change', calculate);
   $('byo').addEventListener('change', calculate);
   $('camMgmt').addEventListener('change', calculate);
+  $('diy').addEventListener('change', calculate);
+  $('selfHost').addEventListener('change', calculate);
 
   // Modal
   var modal = $('pricesModal');

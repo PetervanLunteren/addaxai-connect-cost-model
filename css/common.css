@@ -297,9 +297,18 @@ header a { color: var(--teal-700); }
   accent-color: var(--teal-700);
 }
 
-.camera-row.disabled {
+.camera-row.disabled,
+.service-row.disabled {
   opacity: .4;
   pointer-events: none;
+}
+
+.info-note {
+  font-size: .8rem;
+  color: var(--gray-500);
+  font-style: italic;
+  margin-bottom: 1rem;
+  line-height: 1.5;
 }
 
 .input-row .desc {
