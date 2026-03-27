@@ -339,7 +339,7 @@ header a { color: var(--teal-700); }
   box-shadow: 0 0 0 3px rgba(11,95,101,.15);
 }
 
-.input-row input {
+.input-row input:not([type="checkbox"]) {
   width: 90px;
   text-align: right;
   padding: .35rem .5rem;
@@ -351,7 +351,7 @@ header a { color: var(--teal-700); }
   transition: border-color .15s;
 }
 
-.input-row input:focus {
+.input-row input:not([type="checkbox"]):focus {
   outline: none;
   border-color: var(--teal-500);
   box-shadow: 0 0 0 3px rgba(65,153,102,.15);
@@ -461,7 +461,7 @@ footer a { color: var(--green-600); }
     flex: 1 1 100%;
   }
 
-  .input-row input,
+  .input-row input:not([type="checkbox"]),
   .input-row select {
     width: 100%;
   }
