@@ -233,7 +233,6 @@ header a { color: var(--teal-700); }
   background: white;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  overflow: hidden;
 }
 
 .card-header {
@@ -241,6 +240,7 @@ header a { color: var(--teal-700); }
   font-weight: 600;
   font-size: .9rem;
   border-bottom: 1px solid var(--gray-200);
+  border-radius: var(--radius) var(--radius) 0 0;
 }
 
 .card-header.green {
@@ -272,17 +272,67 @@ header a { color: var(--teal-700); }
   flex: 1;
 }
 
-.input-row label .caption {
-  display: block;
-  font-size: .7rem;
-  color: var(--gray-400);
-  font-weight: 400;
-  margin-top: .1rem;
-  font-style: italic;
+/* Info tooltips */
+.info-tip {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: .2rem;
 }
 
-.input-row label .caption a {
-  color: var(--teal-500);
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--gray-200);
+  color: var(--gray-500);
+  font-size: .55rem;
+  font-style: italic;
+  font-weight: 700;
+  cursor: help;
+  line-height: 1;
+}
+
+.info-text {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: -8px;
+  width: 240px;
+  background: var(--gray-800);
+  color: white;
+  padding: .5rem .75rem;
+  border-radius: 6px;
+  font-size: .7rem;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.5;
+  z-index: 50;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+}
+
+.info-text::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 14px;
+  width: 8px;
+  height: 8px;
+  background: var(--gray-800);
+  transform: rotate(45deg);
+}
+
+.info-text a {
+  color: var(--teal-300);
+  text-decoration: underline;
+}
+
+.info-tip:hover .info-text,
+.info-tip:focus-within .info-text {
+  display: block;
 }
 
 .checkbox-label {

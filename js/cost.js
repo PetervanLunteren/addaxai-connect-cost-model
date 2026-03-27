@@ -21,7 +21,7 @@ function prices() {
   };
 }
 
-function computeTotal(P, cams, yrs, byo, backup, encl, sessions, localSessions, devDays, inclMgmt, mgmtCost, diy, selfHost) {
+function computeTotal(P, cams, yrs, byo, backup, encl, sessions, localSessions, devDays, inclMgmt, mgmtCost, diy) {
   var months = yrs * 12;
   var ca = byo ? 0 : cams;
   var cb = byo ? 0 : backup;
@@ -38,7 +38,7 @@ function computeTotal(P, cams, yrs, byo, backup, encl, sessions, localSessions, 
     diy ? 0 : P.localSupport * localSessions,
     P.sim * months * cams,
     (inclMgmt ? mgmtCost : 0) * yrs * cams,
-    selfHost ? 0 : P.srvInstance * months,
+    diy ? 0 : P.srvInstance * months,
     diy ? 0 : P.srvMaint * months,
     diy ? 0 : P.swMaint * months
   ];
@@ -91,7 +91,6 @@ function calculate() {
   var localSupport = val('localSupportSessions');
   var mgmtCost  = val('camMgmtCost');
   var diy       = $('diy').checked;
-  var selfHost  = $('selfHost').checked;
   var months    = years * 12;
 
   // Disable camera inputs when BYO is checked
@@ -124,7 +123,7 @@ function calculate() {
     { name: 'Local support',                 unit: P.localSupport,        basis: 'Per session',       qty: diy ? 0 : localSupport,      cat: 'Services' },
     { name: 'Mobile data (SIM-card)',         unit: P.sim * months,        basis: 'Per camera / ' + years + 'yr', qty: active,           cat: 'Usage' },
     { name: 'Camera placement & management', unit: (inclMgmt ? mgmtCost : 0) * years, basis: 'Per camera / ' + years + 'yr', qty: active, cat: 'Usage' },
-    { name: 'Server instance',               unit: P.srvInstance * months, basis: 'Per project / ' + years + 'yr', qty: selfHost ? 0 : 1, cat: 'Usage' },
+    { name: 'Server instance',               unit: P.srvInstance * months, basis: 'Per project / ' + years + 'yr', qty: diy ? 0 : 1,      cat: 'Usage' },
     { name: 'Server maintenance',            unit: P.srvMaint * months,   basis: 'Per project / ' + years + 'yr', qty: diy ? 0 : 1,    cat: 'Usage' },
     { name: 'Software maintenance',          unit: P.swMaint * months,    basis: 'Per project / ' + years + 'yr', qty: diy ? 0 : 1,    cat: 'Usage' },
   ];
@@ -204,7 +203,7 @@ function calculate() {
     sHTML += '<tr><td class="row-header">' + y + ' yr' + (y > 1 ? 's' : '') + '</td>';
     camSteps.forEach(function (c) {
       var bk = Math.round(c * backupRatio);
-      var t = computeTotal(P, c, y, byo, bk, enclCount, sessions, localSupport, 0, inclMgmt, mgmtCost, diy, selfHost);
+      var t = computeTotal(P, c, y, byo, bk, enclCount, sessions, localSupport, 0, inclMgmt, mgmtCost, diy);
       var avg = t / c / y;
       var isCurrent = c === active && y === years;
       sHTML += '<td class="' + (isCurrent ? 'current-cell' : '') + '">\u20AC ' + Math.round(avg) + '</td>';
@@ -223,7 +222,7 @@ function calculate() {
       year: y,
       points: camSteps.map(function (c) {
         var bk = Math.round(c * backupRatio);
-        var t = computeTotal(P, c, y, byo, bk, enclCount, sessions, localSupport, 0, inclMgmt, mgmtCost, diy, selfHost);
+        var t = computeTotal(P, c, y, byo, bk, enclCount, sessions, localSupport, 0, inclMgmt, mgmtCost, diy);
         return { cam: c, avg: Math.round(t / c / y) };
       })
     };
@@ -284,7 +283,6 @@ document.addEventListener('DOMContentLoaded', function () {
   $('byo').addEventListener('change', calculate);
   $('camMgmt').addEventListener('change', calculate);
   $('diy').addEventListener('change', calculate);
-  $('selfHost').addEventListener('change', calculate);
 
   // Modal
   var modal = $('pricesModal');
