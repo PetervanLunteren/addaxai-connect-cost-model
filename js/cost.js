@@ -81,7 +81,7 @@ function renderDonut(svgEl, legendEl, data, total) {
 function calculate() {
   var P         = prices();
   var byo       = $('byo').checked;
-  var inclMgmt  = $('camMgmt').checked;
+  var inclMgmt  = !$('camMgmt').checked;
   var years     = val('years');
   var active    = val('activeCameras');
   var backup    = val('backupCameras');
