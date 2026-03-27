@@ -292,12 +292,6 @@ document.addEventListener('DOMContentLoaded', function () {
   $('closeModal').addEventListener('click', function () { modal.classList.remove('open'); });
   modal.addEventListener('click', function (e) { if (e.target === modal) modal.classList.remove('open'); });
 
-  // Camera specs modal
-  var camSpecsModal = $('cameraSpecsModal');
-  $('openCameraSpecs').addEventListener('click', function (e) { e.preventDefault(); camSpecsModal.classList.add('open'); });
-  $('closeCameraSpecs').addEventListener('click', function () { camSpecsModal.classList.remove('open'); });
-  camSpecsModal.addEventListener('click', function (e) { if (e.target === camSpecsModal) camSpecsModal.classList.remove('open'); });
-
   // Initial calculation
   calculate();
 });
