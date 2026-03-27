@@ -49,7 +49,7 @@ function initCameraSync() {
 
 /* Save / Load project state */
 var COST_IDS = ['years', 'activeCameras', 'backupCameras', 'enclosures', 'trainingSessions', 'localSupportSessions', 'devDays'];
-var COST_CHECKBOXES = ['byo', 'camMgmt', 'diy'];
+var COST_CHECKBOXES = ['byo', 'byoSim', 'camMgmt', 'diy'];
 var PRICE_IDS = [
   'priceCamera', 'priceEnclosure', 'priceConfig', 'priceLogistics', 'priceSD',
   'priceBatteries', 'priceSIM', 'camMgmtCost', 'priceCharger', 'priceSWSetup',
@@ -107,7 +107,7 @@ function restoreState(state) {
   }
 
   // Trigger recalculation by dispatching events on key inputs
-  ['activeCameras', 'years', 'byo', 'camMgmt', 'diy'].forEach(function (id) {
+  ['activeCameras', 'years', 'byo', 'byoSim', 'camMgmt', 'diy'].forEach(function (id) {
     var el = $(id);
     if (el) el.dispatchEvent(new Event('input', { bubbles: true }));
   });

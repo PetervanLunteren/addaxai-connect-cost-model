@@ -49,6 +49,9 @@
           <div class="input-row checkbox-row">
             <label class="checkbox-label"><input type="checkbox" id="byo"><span>I'll bring my own cameras<span class="caption">Skips camera hardware costs, but usually requires a few days of software development to integrate with the platform. See <a href="#" id="openCameraSpecs">camera requirements</a></span></span></label>
           </div>
+          <div class="input-row checkbox-row">
+            <label class="checkbox-label"><input type="checkbox" id="byoSim"><span>I'll provide my own SIM cards<span class="caption">Removes mobile data costs from the estimate</span></span></label>
+          </div>
           <div class="input-row camera-row">
             <label>Active cameras<span class="caption">Cameras with an active connection to the system (includes SIM, SD-cards, batteries, configuration). See <a href="https://wiki.smartparks.org/addaxaiconnect/cameras/willfinet40cg" target="_blank">camera details</a></span></label>
             <input type="number" id="activeCameras" value="50" min="0" step="1">
@@ -65,7 +68,7 @@
             <label class="checkbox-label"><input type="checkbox" id="camMgmt"><span>I'll arrange camera placement and management myself<span class="caption">When unchecked, this is handled by a partner like Wildlife Insight in the Netherlands. In other countries this needs to be arranged separately</span></span></label>
           </div>
           <div class="input-row checkbox-row">
-            <label class="checkbox-label"><input type="checkbox" id="diy"><span>I'll handle setup and maintenance myself<span class="caption">Removes all professional service and hosting costs. You set up the software, server, and cameras yourself using the open-source documentation</span></span></label>
+            <label class="checkbox-label"><input type="checkbox" id="diy"><span>I'll set up and maintain the server myself<span class="caption">Removes all professional service and hosting costs. You set up the software, server, and cameras yourself using the open-source documentation</span></span></label>
           </div>
           <div class="input-row service-row">
             <label>Training sessions<span class="caption">Onboarding sessions to walk through the platform, settings, and workflows</span></label>
